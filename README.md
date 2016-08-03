@@ -2,9 +2,9 @@
 
 For more information on Hubot, go to [HUBOT.md](HUBOT.md)
 
-## Scipts
+## Scripts
 
-`hubots-scripts.json` loads scripts from the [https://github.com/github/hubot-scripts](hubots-scripts repository).
+`hubots-scripts.json` loads scripts from the [hubot-scripts repository[(https://github.com/github/hubot-scripts).
 This package has been deprecated, and use discouraged.
 
 `external-scripts.json` loads scripts from node modules.
