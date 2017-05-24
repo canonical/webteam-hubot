@@ -50,7 +50,7 @@ module.exports = (robot) ->
 
     message = "" +
       "The webteam is autodeploying #{service_name} to production. " +
-      "Contact us with @webteam or in #web-team"
+      "Contact us in #web-team"
 
     try
       for room in rooms
