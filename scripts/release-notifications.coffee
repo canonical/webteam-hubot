@@ -48,7 +48,7 @@ module.exports = (robot) ->
       res.end ""
       return
 
-    message = "" +
+    message = "[webteam-deploy] " +
       "The webteam is autodeploying #{service_name} to production. " +
       "Contact us in #web-team"
 
