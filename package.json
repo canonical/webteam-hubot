@@ -5,18 +5,18 @@
   "author": "Canonical Webteam <webteam@canonical.com>",
   "description": "Webteam's friendly bot",
   "dependencies": {
-    "hubot": "^2.19.0",
+    "hubot": "2.19.0",
     "hubot-diagnostics": "0.0.1",
-    "hubot-google-images": "^0.2.6",
-    "hubot-google-translate": "^0.2.0",
-    "hubot-help": "^0.2.0",
-    "hubot-heroku-keepalive": "^1.0.2",
-    "hubot-irc": "^0.2.8",
+    "hubot-google-images": "0.2.7",
+    "hubot-google-translate": "0.2.1",
+    "hubot-help": "0.2.2",
+    "hubot-heroku-keepalive": "1.0.3",
+    "hubot-irc": "0.2.9",
     "hubot-maps": "0.0.2",
-    "hubot-pugme": "^0.1.0",
+    "hubot-pugme": "0.1.1",
     "hubot-redis-brain": "0.0.3",
-    "hubot-rules": "^0.1.1",
-    "hubot-shipit": "^0.2.0"
+    "hubot-rules": "0.1.2",
+    "hubot-shipit": "0.2.1"
   },
   "engines": {
     "node": "6.11.x"
