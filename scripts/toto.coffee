@@ -1,5 +1,5 @@
 module.exports = (robot) ->
-  robot.hear /toto/, (res) ->
+  robot.respond /toto/, (res) ->
     res
       .http 'http://smoke.toto.space'
       .header 'Content-Type', 'application/json'
@@ -8,4 +8,4 @@ module.exports = (robot) ->
           res.send 'toto is loling at you'
         else
           data = JSON.parse(body)
-          res.send "toto is so cool since #{data.days} days"
+          res.send "toto has been so cool for #{data.days} days"
