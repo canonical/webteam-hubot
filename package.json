@@ -5,8 +5,8 @@
   "author": "Canonical Webteam <webteam@canonical.com>",
   "description": "Webteam's friendly bot",
   "dependencies": {
-    "coffeescript": "^1.12.6",
-    "hubot": "^3.3.2",
-    "hubot-irc": "^0.4.0"
+    "coffeescript": "1.12.7",
+    "hubot": "3.3.2",
+    "hubot-irc": "0.4.0"
   }
 }
