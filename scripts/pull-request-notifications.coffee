@@ -73,7 +73,7 @@ announcePullRequest = (data, cb) ->
     else
       mentioned_line = ''
 
-    if data.pull_request.labels
+    if data.pull_request.labels.length
       labels = data.pull_request.labels.map (label) ->
           search = label.name.search /Review:/
           if search != -1
