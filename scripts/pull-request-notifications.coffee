@@ -73,6 +73,16 @@ announcePullRequest = (data, cb) ->
     else
       mentioned_line = ''
 
+    if data.pull_request.labels
+      labels = data.pull_request.labels.map (label) ->
+          search = label.name.search /Review:/
+          if search != -1
+            labelres = label.name.toLowerCase()
+            labelres = labelres.replace /needed/, ""
+            .replace /review: /, "review-"
+
+      labels_line = "\nLabels: #{labels.join(",")}"
+
     cb "[webteam-newPR] New pull request \"#{data.pull_request.title}\" " +
       "by #{data.pull_request.user.login}: " +
-      "#{data.pull_request.html_url}#{mentioned_line}"
+      "#{data.pull_request.html_url}#{mentioned_line} #{labels_line}"
