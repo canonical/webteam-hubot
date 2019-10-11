@@ -82,6 +82,8 @@ announcePullRequest = (data, cb) ->
             .replace /review: /, "review-"
 
       labels_line = "\nLabels: #{labels.join(",")}"
+    else:
+      labels_line = ""
 
     cb "[webteam-newPR] New pull request \"#{data.pull_request.title}\" " +
       "by #{data.pull_request.user.login}: " +
