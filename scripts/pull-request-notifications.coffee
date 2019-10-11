@@ -78,7 +78,7 @@ announcePullRequest = (data, cb) ->
           search = label.name.search /Review:/
           if search != -1
             labelres = label.name.toLowerCase()
-            labelres = labelres.replace /needed/, ""
+            labelres = labelres.replace /\ needed/, ""
             .replace /review: /, "review-"
 
       labels_line = "\nLabels: #{labels.join(",")}"
