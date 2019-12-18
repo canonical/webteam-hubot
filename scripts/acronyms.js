@@ -5,8 +5,10 @@ module.exports = function(robot) {
     acronyms = require('../acronyms.json');
     acronym = res.match[1].toUpperCase();
 
-    if (acronyms[acronym]) {
-      return res.send(acronyms[acronym]);
+    var response = acronyms.filter(a => a.acronym.toUpperCase() === acronym)[0];
+
+    if (response) {
+      return res.send(response.definition + ' ' + response.link);
     } else {
       return res.send('This acronym doens\'t exists (yet!)');
     }
