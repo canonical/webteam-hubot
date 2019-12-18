@@ -6,6 +6,7 @@
   "description": "Webteam's friendly bot",
   "dependencies": {
     "coffeescript": "1.12.7",
+    "google-spreadsheet": "^2.0.8",
     "hubot": "3.3.2",
     "hubot-irc": "0.4.0"
   }
