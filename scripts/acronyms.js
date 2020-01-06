@@ -14,10 +14,12 @@ module.exports = function(robot) {
 
         doc.useServiceAccountAuth(CREDS, function (err) {
             if (err) {
+                console.log(err);
                 return res.send('It seems there is an issue accessing the spreadsheet');
             }
             doc.getRows(1, function (err, rows) {
                 if (err) {
+                    console.log(err);
                     return res.send('It seems there is an issue with the spreadsheet');
                 }
                 var response = rows.filter(a => a.acronym.toUpperCase() === acronym)[0];
