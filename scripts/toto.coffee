@@ -14,7 +14,8 @@ module.exports = (robot) ->
     res.send("I love you too my friend.")
 
   robot.respond /ask (.*)/, (res) ->
-    res.send "#{res.match[1]} is it live?"
+    if res.match[1].toLowerCase().indexOf("fran") == -1:
+      res.send "#{res.match[1]} is it live?"
 
   robot.respond /words/, (res) ->
     res
