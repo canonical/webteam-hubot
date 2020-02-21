@@ -41,7 +41,7 @@ module.exports = function(robot) {
         room = query.room;
 
         try {
-            robot.messageRoom(room, "[webteam-action] 🛑 The action " + workflow + " failed: https://github.com/" + repo_name + "/runs/" + action_id);
+            robot.messageRoom(room, "[webteam-action] 🛑 The action '" + workflow + "' failed: https://github.com/" + repo_name + "/actions/runs/" + action_id);
         } catch (_error) {
             error = _error;
             robot.messageRoom(room, "Whoa, I got an error: " + error);
