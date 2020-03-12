@@ -13,4 +13,4 @@ RUN npm install
 # Setup commands to run server
 ENTRYPOINT ["bin/hubot", "-a", "irc"]
 
-CMD ["0.0.0.0:8080"]
+CMD ["0.0.0.0:80"]
