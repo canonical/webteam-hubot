@@ -1,4 +1,4 @@
-# Webteam Hubot
+# webbot
 
 This is the code-base for the Web-team irc bot and nicely called `webbot`.
 
