@@ -15,7 +15,6 @@ Add files
 ## Development
 
 The `master` branch is the canonical copy.
-We have a `dev` branch for testing code, but this is not required. It is aimed to prevent interrupting the bot and people using it.
 
 Running the bot in your local terminal will start hubot in console mode (rather than irc), and allow local testing.
 

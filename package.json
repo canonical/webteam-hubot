@@ -4,6 +4,10 @@
   "private": true,
   "author": "Canonical Webteam <webteam@canonical.com>",
   "description": "Webteam's friendly bot",
+  "scripts": {
+    "start": "bin/hubot",
+    "start-irc": "bin/hubot -a irc"
+  },
   "dependencies": {
     "coffeescript": "1.12.7",
     "google-spreadsheet": "3.0.6",

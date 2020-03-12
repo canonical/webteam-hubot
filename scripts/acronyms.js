@@ -1,7 +1,23 @@
-const SPREADSHEET_ID = process.env.HUBOT_SPREADSHEET_ID;
+SPREADSHEET_ID = process.env.HUBOT_SPREADSHEET_ID;
+if (!SPREADSHEET_ID) {
+    console.log("Missing SPREADSHEET_ID in environment");
+}
+
+CLIENT_EMAIL = process.env.HUBOT_SPREADSHEET_CLIENT_EMAIL;
+if (!CLIENT_EMAIL) {
+    console.log("Missing CLIENT_ID in environment");
+}
+
+PRIVATE_KEY = process.env.HUBOT_SPREADSHEET_PRIVATE_KEY;
+if (!PRIVATE_KEY) {
+    console.log('Missing PRIVATE_KEY in environment');
+} else {
+    PRIVATE_KEY = PRIVATE_KEY.replace(/\\n/g, '\n');
+}
+
 var CREDS = {
-    client_email: process.env.HUBOT_SPREADSHEET_CLIENT_EMAIL,
-    private_key: process.env.HUBOT_SPREADSHEET_PRIVATE_KEY.replace(/\\n/g, '\n')
+    client_email: CLIENT_EMAIL,
+    private_key: PRIVATE_KEY
 };
 
 const { GoogleSpreadsheet } = require('google-spreadsheet');
