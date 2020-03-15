@@ -1,3 +1,26 @@
+// Description:
+//   A human readable acronym translator that reads from a Google spreadsheet.
+//
+// Dependencies:
+//   google-spreadsheet: ""
+//
+// Configuration:
+//   set HUBOT_SPREADSHEET_ID in environment
+//   set HUBOT_SPREADSHEET_CLIENT_EMAIL in environment
+//   set HUBOT_SPREADSHEET_PRIVATE_KEY in environment
+//
+// Commands:
+//   hubot acronym <acronym>: translates the acronym to human readable words
+//
+// Note:
+//   The format of the spreadsheet should be:
+//
+//   | Acronym | Definition   | Link                                                                                              |
+//   | PR      | Pull-Request | https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests |
+//
+// Authors:
+//   tbille
+
 SPREADSHEET_ID = process.env.HUBOT_SPREADSHEET_ID;
 if (!SPREADSHEET_ID) {
     console.log("Missing SPREADSHEET_ID in environment");

@@ -1,3 +1,15 @@
+# Description:
+#   A list of fun scripts.
+#
+# Commands:
+#   hubot toto: sends how many days toto has been cool
+#   hubot I love you: sends love
+#   hubot ask <person>: ask the person if it is live
+#   hubot words: sends 2 random words
+#
+# Author:
+#   tbille
+
 module.exports = (robot) ->
   robot.respond /toto/, (res) ->
     res
