@@ -24,10 +24,13 @@
 
 var url = require('url');
 var querystring = require('querystring');
+const proxy = require('proxy-agent');
+
 const { GraphQLClient } = require('graphql-request');
 
 var SECRET_KEY = process.env.HUBOT_RELEASE_NOTIFICATION_SECRET;
 var TOKEN = process.env.HUBOT_GITHUB_TOKEN;
+var HTTPS_PROXY = process.env.HTTPS_PROXY || "";
 
 async function requestPullRequests(res) {
     var query =  `
@@ -50,6 +53,7 @@ async function requestPullRequests(res) {
             'authorization': 'Bearer ' + TOKEN,
             'content-type': 'application/json'
         },
+        agent: proxy(HTTPS_PROXY, true)
     });
 
     const data = await graphQLClient.request(query);
