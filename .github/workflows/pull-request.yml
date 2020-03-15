@@ -1,0 +1,12 @@
+name: Pull request notificator
+on:
+  schedule:
+    - cron:  '0 10 * * *'
+
+jobs:
+  run-cypress:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send request to bot to make notification
+        run: curl --request POST -F "secret=${{ secrets.BOT_SECRET }}" https://webteam-ircbot.canonical.com/hubot/gh-pull-request-notification?room=%23web-team
