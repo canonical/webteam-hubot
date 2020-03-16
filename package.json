@@ -10,10 +10,10 @@
   },
   "dependencies": {
     "coffeescript": "1.6.3",
-    "google-spreadsheet": "3.0.6",
+    "google-spreadsheet": "3.0.10",
     "graphql-request": "^1.8.2",
     "hubot": "3.3.2",
-    "hubot-irc": "0.4.0",
+    "hubot-irc": "0.4.1",
     "proxy-agent": "^3.1.1"
   }
 }
