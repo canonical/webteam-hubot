@@ -4,7 +4,7 @@ on:
     - cron:  '0 10 * * *'
 
 jobs:
-  run-cypress:
+  pr-notificator:
     runs-on: ubuntu-latest
 
     steps:
