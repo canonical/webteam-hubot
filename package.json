@@ -9,7 +9,7 @@
     "start-irc": "bin/hubot -a irc"
   },
   "dependencies": {
-    "coffeescript": "1.12.7",
+    "coffeescript": "1.6.3",
     "google-spreadsheet": "3.0.6",
     "graphql-request": "^1.8.2",
     "hubot": "3.3.2",
