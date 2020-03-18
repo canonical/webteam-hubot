@@ -32,10 +32,15 @@ var SECRET_KEY = process.env.HUBOT_RELEASE_NOTIFICATION_SECRET;
 var TOKEN = process.env.HUBOT_GITHUB_TOKEN;
 var HTTPS_PROXY = process.env.HTTPS_PROXY || "";
 
-async function requestPullRequests(res) {
+async function requestPullRequests(res, authors) {
+    var authors_query = "";
+    authors.forEach(function (author) {
+        authors_query = authors_query.concat(" author:" + author);
+    });
+
     var query =  `
       {
-        search(query: "org:canonical-web-and-design is:pr is:open archived:false", type: ISSUE, last: 100) {
+        search(query: "org:canonical-web-and-design is:pr is:open archived:false ${authors_query}", type: ISSUE, last: 100) {
           edges {
             node {
               ... on PullRequest {
@@ -48,6 +53,7 @@ async function requestPullRequests(res) {
           }
         }
       }`;
+
     const graphQLClient = new GraphQLClient("https://api.github.com/graphql", {
         headers: {
             'authorization': 'Bearer ' + TOKEN,
@@ -60,12 +66,20 @@ async function requestPullRequests(res) {
     return data["search"]["edges"];
 }
 
-async function sendNumberOpenedPullRequests(res, robot, room) {
-    pr = await requestPullRequests(res);
+async function sendNumberOpenedPullRequests(res, robot, rooms, authors) {
+    var pr = await requestPullRequests(res, authors);
 
-    message = "[webteam-pr] 📋 There are " + pr.length + " pull-requests open. You can find the list here: https://github.com/pulls?q=org%3Acanonical-web-and-design+is%3Apr+is%3Aopen+archived%3Afalse";
-    if (room) {
-        robot.messageRoom(room, message);
+    var authors_query = "";
+    authors.forEach(function (author) {
+        authors_query = authors_query.concat("+author%3A" + author);
+    });
+
+    var message = "[webteam-pr] 📋 There are " + pr.length + " pull-requests open. You can find the list here: https://github.com/search?q=org%3Acanonical-web-and-design+is%3Apr+is%3Aopen+archived%3Afalse" + authors_query;
+
+    if (rooms) {
+        rooms.forEach(function (room) {
+            robot.messageRoom(room, message);
+        });
     } else {
         res.send(message);
     }
@@ -83,10 +97,21 @@ module.exports = async function(robot) {
     robot.router.post("/hubot/gh-pull-request-notification", async function(req, res) {
         var query = querystring.parse(url.parse(req.url).query);
         var data = req.body;
-        var room = query.room;
+        if (!query.rooms) {
+            res.send("Parameters rooms required");
+            res.end("")
+        }
+
+        var rooms = query.rooms.split(',');
+        var authors;
+        if (query.authors) {
+            authors = query.authors.split(',');
+        } else {
+            authors = [];
+        }
 
         if (data.secret && data.secret === SECRET_KEY) {
-            await sendNumberOpenedPullRequests(res, robot, room);
+            await sendNumberOpenedPullRequests(res, robot, rooms, authors);
         } else {
             res.send("Invalid secret");
         }

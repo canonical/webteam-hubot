@@ -10,3 +10,5 @@ jobs:
     steps:
       - name: Send request to bot to make notification
         run: curl --request POST -F "secret=${{ secrets.BOT_SECRET }}" https://webteam-ircbot.canonical.com/hubot/gh-pull-request-notification?room=%23web-team
+      - name: Send request to bot to make notification for backend team
+        run: curl --request POST -F "secret=${{ secrets.BOT_SECRET }}" https://webteam-ircbot.canonical.com/hubot/gh-pull-request-notification?room=%23base-squad&authors=tbille,jkfran,jpmartinspt,nottrobin,carkod
