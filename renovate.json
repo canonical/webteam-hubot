@@ -10,5 +10,8 @@
       "extends": [":automergeMinor"]
     }
   ],
-  "ignoreDeps": ["coffeescript"]
+  "ignoreDeps": [
+    "coffeescript",
+    "hubot-irc"
+  ]
 }
