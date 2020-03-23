@@ -107,3 +107,4 @@ $RECYCLE.BIN/
 
 client_secret.json
 .dotrun.json
+.env.local
