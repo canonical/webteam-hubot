@@ -39,7 +39,7 @@ module.exports = async function (robot) {
         try {
             const data = await graphQuery(lastMeetingQuery);
             res.send(data["repository"]["issues"]["edges"][0]["node"]["url"]);
-        } catch {
+        } catch(error) {
             res.send("No meeting labeled '" + meetingName + "'.");
         }
     });
