@@ -24,15 +24,12 @@
 
 var url = require('url');
 var querystring = require('querystring');
-const proxy = require('proxy-agent');
-
-const { GraphQLClient } = require('graphql-request');
+var graphQuery = require("../api/github");
 
 var SECRET_KEY = process.env.HUBOT_RELEASE_NOTIFICATION_SECRET;
-var TOKEN = process.env.HUBOT_GITHUB_TOKEN;
-var HTTPS_PROXY = process.env.HTTPS_PROXY || "";
 
-async function requestPullRequests(res, authors) {
+
+async function requestPullRequests(authors) {
     var authors_query = "";
     authors.forEach(function (author) {
         authors_query = authors_query.concat(" author:" + author);
@@ -54,20 +51,12 @@ async function requestPullRequests(res, authors) {
         }
       }`;
 
-    const graphQLClient = new GraphQLClient("https://api.github.com/graphql", {
-        headers: {
-            'authorization': 'Bearer ' + TOKEN,
-            'content-type': 'application/json'
-        },
-        agent: proxy(HTTPS_PROXY, true)
-    });
-
-    const data = await graphQLClient.request(query);
+    const data = await graphQuery(query);
     return data["search"]["edges"];
 }
 
 async function sendNumberOpenedPullRequests(res, robot, rooms, authors) {
-    var pr = await requestPullRequests(res, authors);
+    var pr = await requestPullRequests(authors);
 
     var authors_query = "";
     authors.forEach(function (author) {

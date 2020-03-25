@@ -616,7 +616,7 @@ irc-colors@^1.1.0:
   resolved "https://registry.yarnpkg.com/irc-colors/-/irc-colors-1.5.0.tgz#08834c01ead88b0fd88386a5f2af8f2b0bb963fb"
   integrity sha512-HtszKchBQTcqw1DC09uD7i7vvMayHGM1OCo6AHt5pkgZEyo99ClhHTMJdf+Ezc9ovuNNxcH89QfyclGthjZJOw==
 
-"irc@github:matrix-org/node-irc#e80eb07dfe2d1da55f3e0c4ac04dca4fbd2757fd":
+irc@matrix-org/node-irc#e80eb07dfe2d1da55f3e0c4ac04dca4fbd2757fd:
   version "0.3.12"
   resolved "https://codeload.github.com/matrix-org/node-irc/tar.gz/e80eb07dfe2d1da55f3e0c4ac04dca4fbd2757fd"
   dependencies:
