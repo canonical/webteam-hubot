@@ -23,7 +23,7 @@ module.exports = async function (robot) {
     robot.respond(/meeting (.*)/, async function (res) {
         const meetingName = res.match[1];
         const lastMeetingQuery = `
-                { 
+                {
                     repository(name:"meeting-notes", owner:"canonical-web-and-design") {
                         issues(labels:"${meetingName}", last:1) {
                             edges {

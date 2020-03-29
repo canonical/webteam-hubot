@@ -13,8 +13,8 @@
 module.exports = (robot) ->
   robot.respond /toto/, (res) ->
     res
-      .http 'http://smoke.toto.space'
-      .header 'Content-Type', 'application/json'
+      .http('http://smoke.toto.space')
+      .header('Content-Type', 'application/json')
       .get() (err, _, body) ->
         if err?
           res.send 'toto is loling at you'
@@ -30,7 +30,7 @@ module.exports = (robot) ->
 
   robot.respond /words/, (res) ->
     res
-      .http 'https://www.randomlists.com/data/words.json'
+      .http('https://www.randomlists.com/data/words.json')
       .get() (err, _, body) ->
         if err?
           res.send 'No words today.'
