@@ -17,7 +17,12 @@ const MORNING_GREETINGS = [
   "Alright",
   "Top of the morning to you",
   "Mōrena",
-  "G'day"
+  "G'day",
+  "早上好",
+  "สวัสดีจ่ะ",
+  "Sawaddee ja",
+  "Zao Shang Hao",
+  "‘Bout ye"
 ];
 
 const NIGHT_GREETINGS = [
@@ -29,7 +34,12 @@ const NIGHT_GREETINGS = [
   "Alright",
   "Toodle-oo",
   "Ka kite anō",
-  "Hoo roo"
+  "Hoo roo",
+  "晚安",
+  "ราตรีสวัสดิ์",
+  "Ratree Swad",
+  "Wan An",
+  "Right... good luck"
 ];
 
 module.exports = function(robot) {
