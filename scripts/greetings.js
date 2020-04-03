@@ -43,6 +43,18 @@ const NIGHT_GREETINGS = [
 ];
 
 module.exports = function(robot) {
+  function sendGreeting(res) {
+    const user = res.envelope.user.name;
+    const greetings =
+      res.match[2].toLowerCase() === "night"
+        ? NIGHT_GREETINGS
+        : MORNING_GREETINGS;
+    const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+    res.send(`${greeting} ${user}`);
+  }
+
+  // Respond to morning/night and attempt to not send the greeting when users
+  // are responding to another user's greeting.
   robot.hear(/^(goo+d )?(mo+rning|night) ?(.*)?/i, function(res) {
     const user = res.envelope.user.name;
     // Get the text following the greeting.
@@ -51,12 +63,12 @@ module.exports = function(robot) {
     if (!remainder || robot.brain.usersForFuzzyName(remainder).length === 0) {
       // The user is probably not reciprocating another user's greeting so send
       // a reply.
-      const greetings =
-        res.match[2].toLowerCase() === "night"
-          ? NIGHT_GREETINGS
-          : MORNING_GREETINGS;
-      const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-      res.send(`${greeting} ${user}`);
+      sendGreeting(res);
     }
+  });
+
+  // Respond when someone says morning/night to webbot.
+  robot.respond(/^(goo+d )?(mo+rning|night)/i, function(res) {
+    sendGreeting(res);
   });
 };
