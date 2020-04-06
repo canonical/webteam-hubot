@@ -59,8 +59,15 @@ module.exports = function(robot) {
     const user = res.envelope.user.name;
     // Get the text following the greeting.
     const remainder = res.match[3];
-    // Check if the text after the greeting is another user's name.
-    if (!remainder || robot.brain.usersForFuzzyName(remainder).length === 0) {
+    // Check if the text after the greeting contains another user's name.
+    let includesName;
+    if (remainder) {
+      includesName = remainder
+        .replace(",", "")
+        .split(" ")
+        .some(word => robot.brain.usersForFuzzyName(word).length !== 0);
+    }
+    if (!includesName) {
       // The user is probably not reciprocating another user's greeting so send
       // a reply.
       sendGreeting(res);
