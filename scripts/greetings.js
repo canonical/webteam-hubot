@@ -67,7 +67,7 @@ module.exports = function(robot) {
         .split(" ")
         .some(word => robot.brain.usersForFuzzyName(word).length !== 0);
     }
-    if (!includesName) {
+    if (!includesName || remainder.includes(robot.name)) {
       // The user is probably not reciprocating another user's greeting so send
       // a reply.
       sendGreeting(res);
@@ -75,7 +75,7 @@ module.exports = function(robot) {
   });
 
   // Respond when someone says morning/night to webbot.
-  robot.respond(/^(goo+d )?(mo+rning|night)/i, function(res) {
+  robot.respond(/(goo+d )?(mo+rning|night)/i, function(res) {
     sendGreeting(res);
   });
 };
