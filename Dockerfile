@@ -1,8 +1,8 @@
-FROM ubuntu:bionic
+FROM ubuntu:focal
 
 # System dependencies
 RUN apt-get update && \
-    apt-get install libicu-dev nodejs npm git --yes
+    DEBIAN_FRONTEND=noninteractive apt-get install libicu-dev nodejs npm git --yes
 
 # Import code, install code dependencies
 WORKDIR /srv
