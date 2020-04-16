@@ -1,3 +1,24 @@
+// Description:
+//   Update the topic in #web-team to mention who is the support person
+//
+// Dependencies:
+//   url: ""
+//   querystring: ""
+//
+// Configuration:
+//   set HUBOT_RELEASE_NOTIFICATION_SECRET in environment
+//
+// Commands:
+//   hubot update support: update the topic with the current person as support
+//
+// URLS:
+//   POST /hubot/update-support?room=<room>
+//     data:
+//       secret: secret for authentication (HUBOT_RELEASE_NOTIFICATION_SECRET)
+//
+// Authors:
+//   tbille
+
 var url = require('url');
 var querystring = require('querystring');
 
