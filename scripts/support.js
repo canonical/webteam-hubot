@@ -21,11 +21,11 @@ module.exports = function(robot) {
             supportHelp =  `- Webteam ask ${support} for support.`;
         }
 
-        let topic = `ubuntu.com folder - http://ubunt.eu/google-docs. We are the web team. We make websites & apps. Mention @webteam for help ${supportHelp}`
+        let topic = `ubuntu.com folder - http://ubunt.eu/google-docs. We are the web team. We make websites & apps. Mention @webteam for help ${supportHelp}`;
 
         if (rooms) {
             rooms.forEach(function (room) {
-                robot.adapter.command('TOPIC', room, topic)
+                robot.adapter.command('TOPIC', room, topic);
             });
         } else {
             res.topic(topic);
@@ -33,7 +33,7 @@ module.exports = function(robot) {
     }
 
     robot.respond(/update support/i, function(res) {
-        updateSupport(res)
+        updateSupport(res);
     })
 
     robot.router.post("/hubot/update-support", async function(req, res) {
@@ -41,7 +41,7 @@ module.exports = function(robot) {
         var data = req.body;
         if (!query.rooms) {
             res.send("Parameters rooms required");
-            res.end("")
+            res.end("");
         }
 
         var rooms = query.rooms.split(',');
