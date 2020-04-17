@@ -47,6 +47,10 @@ module.exports = function(robot) {
         if (rooms) {
             rooms.forEach(function (room) {
                 robot.adapter.command('TOPIC', room, topic);
+
+                if (supportHelp) {
+                    robot.messageRoom(support, 'Hey hey this is a reminder that today you are in support.');
+                }
             });
         } else {
             res.topic(topic);
