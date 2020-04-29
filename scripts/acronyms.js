@@ -46,16 +46,23 @@ var CREDS = {
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const doc = new GoogleSpreadsheet(SPREADSHEET_ID);
 
+HTTPS_PROXY = process.env.HTTPS_PROXY;
+if (HTTPS_PROXY) {
+    doc.axios.defaults.proxy = false;
+    const HttpsProxyAgent = require('https-proxy-agent');
+    doc.axios.defaults.httpsAgent = new HttpsProxyAgent(HTTPS_PROXY);
+}
+
 async function googleSpreadsheetHandler(res) {
     var acronym, acronyms;
-    acronym = res.match[1].toUpperCase();
+    acronym = res.match[1].toUpperCase().trim();
 
     await doc.useServiceAccountAuth(CREDS);
     await doc.loadInfo();
     const sheet = doc.sheetsByIndex[0];
     rows = await sheet.getRows();
 
-    var response = rows.filter(a => a.Acronym.toUpperCase() === acronym)[0];
+    var response = rows.filter(a => a.Acronym && a.Acronym.toUpperCase().trim() === acronym)[0];
 
     if (response) {
         return res.send(response.Acronym + ': ' + response.Definition + ' ' + response.Link);
