@@ -2,11 +2,11 @@
 
 # Build stage: Install yarn dependencies
 # ===
-FROM node:12-slim AS yarn-dependencies
+FROM ubuntu:focal AS yarn-dependencies
 WORKDIR /srv
-RUN apt-get update && apt-get install git --yes
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install nodejs npm git --yes
 ADD package.json .
-RUN --mount=type=cache,target=/usr/local/share/.cache/yarn yarn install
+RUN --mount=type=cache,target=/usr/local/share/.cache/nmp npm install
 
 # Build the production image
 # ===
