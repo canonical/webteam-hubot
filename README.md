@@ -35,3 +35,6 @@ HUBOT_IRC_PASSWORD=<password> dotrun start-irc
 ```
 
 The bot `totobot` should join the channel `#webbot-canonical-web-test`.
+
+# Deploy
+You can find the deployment config in the deploy folder.
