@@ -21,7 +21,7 @@ RUN apt-get update && apt-get install nodejs --yes
 # Import code, build assets and mirror list
 ADD . .
 RUN rm -rf package.json yarn.lock .babelrc webpack.config.js Gemfile Gemfile.lock nginx.conf
-COPY --from=yarn-dependencies srv/node_modules .
+COPY --from=yarn-dependencies srv/node_modules node_modules/
 
 ARG BUILD_ID
 
