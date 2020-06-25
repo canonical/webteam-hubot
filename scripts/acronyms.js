@@ -20,7 +20,7 @@
 //       token: Should be similar than MATTERMOST_TOKEN
 //       text: acronym
 //     response:
-//       {"response_type": "in_channel", "text": TEXT_POSTED}
+//       {"response_type": "ephemeral", "text": TEXT_POSTED}
 //
 // Note:
 //   The format of the spreadsheet should be:
@@ -105,7 +105,7 @@ module.exports = function(robot) {
         }
 
         res.setHeader('content-type', 'application/json');
-        res.send(JSON.stringify({"response_type": "in_channel", "text": result}));
+        res.send(JSON.stringify({"response_type": "ephemeral", "text": result}));
         return res.end("");
     });
 };
