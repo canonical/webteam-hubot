@@ -6,7 +6,8 @@ FROM ubuntu:focal AS yarn-dependencies
 WORKDIR /srv
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install nodejs npm git --yes
 ADD package.json .
-RUN --mount=type=cache,target=/usr/local/share/.cache/nmp npm install
+RUN npm install -g yarn
+RUN --mount=type=cache,target=/usr/local/share/.cache/yarn yarn install
 
 # Build the production image
 # ===
