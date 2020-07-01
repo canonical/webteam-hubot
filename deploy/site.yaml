@@ -8,18 +8,15 @@ readinessPath: false
 memoryLimit: 128Mi
 
 env:
-  - name: HUBOT_IRC_NICK
+
+  - name: MATTERMOST_USER
     value: "webbot"
-  - name: HUBOT_IRC_SERVER
-    value: "irc.canonical.com"
-  - name: HUBOT_IRC_PORT
-    value: "6697"
-  - name: HUBOT_IRC_USESSL
-    value: "true"
-  - name: HUBOT_IRC_ROOMS
-    value: "#sukha,#web-team,#is-outage,#maas,#webteam-dev,#webbot-canonical-web-test"
+  - name: MATTERMOST_HOST
+    value: "chat.canonical.com"
+  - name: MATTERMOST_GROUP
+    value: "canonical"
   - name: HUBOT_RELEASE_NOTIFICATION_ROOMS
-    value: "#web-team,#is-outage"
+    value: "web--design,is-outage"
   - name: HUBOT_IRC_DEBUG
     value: "true"
   - name: HUBOT_SPREADSHEET_CLIENT_EMAIL
@@ -30,9 +27,9 @@ env:
     secretKeyRef:
       key: hubot-auth-admin
       name: irc-secrets
-  - name: HUBOT_IRC_PASSWORD
+  - name: MATTERMOST_ACCESS_TOKEN
     secretKeyRef:
-      key: hubot-irc-password
+      key: mattermost-access-token
       name: irc-secrets
   - name: HUBOT_RELEASE_NOTIFICATION_SECRET
     secretKeyRef:

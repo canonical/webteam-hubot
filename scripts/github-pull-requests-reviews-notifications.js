@@ -63,7 +63,7 @@ async function sendNumberOpenedPullRequests(res, robot, rooms, authors) {
         authors_query = authors_query.concat("+author%3A" + author);
     });
 
-    var message = "[webteam-pr] 📋 There are " + pr.length + " pull-requests open. You can find the list here: https://github.com/search?q=org%3Acanonical-web-and-design+is%3Apr+is%3Aopen+archived%3Afalse" + authors_query;
+    var message = "[webteam-pr] 📋 There are " + pr.length + " pull-requests open. You can find the list [here](https://github.com/search?q=org%3Acanonical-web-and-design+is%3Apr+is%3Aopen+archived%3Afalse" + authors_query + ")";
 
     if (rooms) {
         rooms.forEach(function (room) {
@@ -88,7 +88,7 @@ module.exports = async function(robot) {
         var data = req.body;
         if (!query.rooms) {
             res.send("Parameters rooms required");
-            res.end("")
+            res.end("");
         }
 
         var rooms = query.rooms.split(',');

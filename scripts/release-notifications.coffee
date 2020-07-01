@@ -50,7 +50,7 @@ module.exports = (robot) ->
 
     message = "[webteam-deploy] " +
       "The webteam is deploying #{service_name} to production. " +
-      "Contact us in #web-team"
+      "Contact us in ~web--design"
 
     try
       for room in rooms
