@@ -59,23 +59,23 @@ module.exports = function(robot) {
 
     robot.respond(/update support/i, function(res) {
         updateSupport(res);
-    })
+    });
 
     robot.router.post("/hubot/update-support", async function(req, res) {
-        var query = querystring.parse(url.parse(req.url).query);
-        var data = req.body;
-        if (!query.rooms) {
-            res.send("Parameters rooms required");
-            res.end("");
-        }
+        // var query = querystring.parse(url.parse(req.url).query);
+        // var data = req.body;
+        // if (!query.rooms) {
+        //     res.send("Parameters rooms required");
+        //     res.end("");
+        // }
 
-        var rooms = query.rooms.split(',');
+        // var rooms = query.rooms.split(',');
 
-        if (data.secret && data.secret === SECRET_KEY) {
-            await updateSupport(res, robot, rooms);
-        } else {
-            res.send("Invalid secret");
-        }
+        // if (data.secret && data.secret === SECRET_KEY) {
+        //     await updateSupport(res, robot, rooms);
+        // } else {
+        //     res.send("Invalid secret");
+        // }
 
         return res.end("");
     });

@@ -6,14 +6,15 @@
   "description": "Webteam's friendly bot",
   "scripts": {
     "start": "bin/hubot",
-    "start-irc": "bin/hubot -a irc"
+    "start-mattermost": "bin/hubot -a matteruser"
   },
   "dependencies": {
     "coffeescript": "1.6.3",
     "google-spreadsheet": "3.0.11",
     "graphql-request": "1.8.2",
     "hubot": "3.3.2",
-    "hubot-irc": "0.4.0",
+    "hubot-matteruser": "^5.3.1",
+    "node-gyp": "^7.0.0",
     "proxy-agent": "3.1.1"
   }
 }

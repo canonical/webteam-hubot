@@ -108,3 +108,5 @@ $RECYCLE.BIN/
 client_secret.json
 .dotrun.json
 .env.local
+client.json
+mattermost-bot-token-webbot.txt
