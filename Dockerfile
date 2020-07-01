@@ -25,6 +25,6 @@ COPY --from=yarn-dependencies srv/node_modules node_modules/
 
 ARG BUILD_ID
 
-ENTRYPOINT ["bin/hubot", "-a", "irc"]
+ENTRYPOINT ["bin/hubot", "-a", "matteruser"]
 
 CMD ["0.0.0.0:80"]
