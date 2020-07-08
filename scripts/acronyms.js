@@ -108,6 +108,7 @@ module.exports = function(robot) {
         let result = `Format: \`/acronym <acronym>\` eg. \`/acronym usn\`. Add your own [here](https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID})`;
         if (req.body.text) {
             if (req.body.text.trim() != 'help') {
+                robot.logger.info('acronym: ' + req.body.text.toUpperCase().trim());
                 result = await googleSpreadsheetHandler(req.body.text.toUpperCase().trim());
             }
         }
