@@ -75,10 +75,18 @@ async function googleSpreadsheetHandler(acronym) {
     const sheet = doc.sheetsByIndex[0];
     var rows = await sheet.getRows();
 
-    var response = rows.filter(a => a.Acronym && a.Acronym.toUpperCase().trim() === acronym)[0];
+    var responses = rows.filter(a => a.Acronym && a.Acronym.toUpperCase().trim() === acronym);
 
-    if (response) {
-        return response.Acronym + ': ' + response.Definition + ' ' + response.Link;
+    var text = "";
+    responses.forEach(function (response) {
+        if (text) { text = text + '\n'; }
+        var link = response.Link ? response.Link : "";
+        var definition = response.Definition ? response.Definition : "";
+        text = text + response.Acronym + ': ' + definition + ' ' + link;
+    });
+
+    if (text) {
+        return text;
     } else {
         return `This acronym doens't exists (yet!). Add your own [here](https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID})`;
     }

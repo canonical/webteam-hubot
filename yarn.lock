@@ -815,14 +815,6 @@ https-proxy-agent@^5.0.0:
     agent-base "6"
     debug "4"
 
-hubot-irc@0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/hubot-irc/-/hubot-irc-0.4.0.tgz#a95d5c32c86702d96324e827656ad457ae5f4f5a"
-  integrity sha512-fyK6YKBc/rJnwtWyt6ke92JpxfqdPn8rkl8ArKvhhXLu0SC+UmcLuddNNccLnSte0PbF016fQnZkEGGYbH6uvQ==
-  dependencies:
-    irc matrix-org/node-irc#e80eb07dfe2d1da55f3e0c4ac04dca4fbd2757fd
-    log "1.4.0"
-
 hubot-matteruser@^5.3.1:
   version "5.3.1"
   resolved "https://registry.yarnpkg.com/hubot-matteruser/-/hubot-matteruser-5.3.1.tgz#2c265fbd1282d349dc3480fe87799add51be4e57"
@@ -855,13 +847,6 @@ iconv-lite@0.4.24:
   dependencies:
     safer-buffer ">= 2.1.2 < 3"
 
-iconv@~2.2.1:
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/iconv/-/iconv-2.2.3.tgz#e084d60eeb7d73da7f0a9c096e4c8abe090bfaed"
-  integrity sha1-4ITWDut9c9p/CpwJbkyKvgkL+u0=
-  dependencies:
-    nan "^2.3.5"
-
 inflight@^1.0.4:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/inflight/-/inflight-1.0.6.tgz#49bd6331d7d02d0c09bc910a1075ba8165b56df9"
@@ -889,20 +874,6 @@ ipaddr.js@1.9.1:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.1.tgz#bff38543eeb8984825079ff3a2a8e6cbd46781b3"
   integrity sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==
-
-irc-colors@^1.1.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/irc-colors/-/irc-colors-1.5.0.tgz#08834c01ead88b0fd88386a5f2af8f2b0bb963fb"
-  integrity sha512-HtszKchBQTcqw1DC09uD7i7vvMayHGM1OCo6AHt5pkgZEyo99ClhHTMJdf+Ezc9ovuNNxcH89QfyclGthjZJOw==
-
-irc@matrix-org/node-irc#e80eb07dfe2d1da55f3e0c4ac04dca4fbd2757fd:
-  version "0.3.12"
-  resolved "https://codeload.github.com/matrix-org/node-irc/tar.gz/e80eb07dfe2d1da55f3e0c4ac04dca4fbd2757fd"
-  dependencies:
-    irc-colors "^1.1.0"
-  optionalDependencies:
-    iconv "~2.2.1"
-    node-icu-charset-detector "~0.2.0"
 
 is-fullwidth-code-point@^1.0.0:
   version "1.0.0"
@@ -1138,11 +1109,6 @@ multiparty@~4.2.1:
     safe-buffer "5.1.2"
     uid-safe "2.1.5"
 
-nan@^2.3.3, nan@^2.3.5:
-  version "2.14.0"
-  resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.0.tgz#7818f722027b2459a86f0295d434d1fc2336c52c"
-  integrity sha512-INOFj37C7k3AfaNTtX8RhsTw7qRy7eLET14cROi9+5HAVbbHuIWUHEauBv5qT4Av2tWasiTY1Jw6puUNqRJXQg==
-
 negotiator@0.6.2:
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.2.tgz#feacf7ccf525a77ae9634436a64883ffeca346fb"
@@ -1183,13 +1149,6 @@ node-gyp@^7.0.0:
     semver "^7.3.2"
     tar "^6.0.1"
     which "^2.0.2"
-
-node-icu-charset-detector@~0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/node-icu-charset-detector/-/node-icu-charset-detector-0.2.0.tgz#c2320da374ddcb671fc54cb4a0e041e156ffd639"
-  integrity sha1-wjINo3Tdy2cfxUy0oOBB4Vb/1jk=
-  dependencies:
-    nan "^2.3.3"
 
 nopt@^4.0.3:
   version "4.0.3"
