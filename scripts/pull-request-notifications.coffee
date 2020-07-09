@@ -85,6 +85,6 @@ announcePullRequest = (data, cb) ->
     else
       labels_line = ""
 
-    cb "[webteam-newPR] New pull request [\"#{data.pull_request.title}\"](#{data.pull_request.html_url}) " +
+    cb "[webteam-newPR] New pull request on #{data.repository.full_name}: [\"#{data.pull_request.title}\"](#{data.pull_request.html_url}) " +
       "by #{data.pull_request.user.login}: " +
       "#{mentioned_line} #{labels_line}"
