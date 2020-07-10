@@ -88,7 +88,7 @@ async function googleSpreadsheetHandler(acronym) {
     if (text) {
         return text;
     } else {
-        return `This acronym doens't exists (yet!). Add your own [here](https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID})`;
+        return `This acronym doesn't exist (yet!). Add your own [here](https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID})`;
     }
 }
 
