@@ -47,3 +47,5 @@ env:
     secretKeyRef:
       key: hubot-mattermost-token
       name: irc-secrets
+  - name: SENTRY_DSN
+    value: https://581b9553f22846578ec60b24c62d7d25@sentry.is.canonical.com//41
