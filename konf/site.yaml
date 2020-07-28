@@ -23,6 +23,8 @@ env:
     value: "webbotac@webbot-262415.iam.gserviceaccount.com"
   - name: HUBOT_SPREADSHEET_ID
     value: "1nNk4typDnOfDEYRzlEjtd58zk-aOd3_NNp6eufthZHM"
+  - name: SENTRY_DSN
+    value: https://581b9553f22846578ec60b24c62d7d25@sentry.is.canonical.com//41
   - name: HUBOT_AUTH_ADMIN
     secretKeyRef:
       key: hubot-auth-admin
