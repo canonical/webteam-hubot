@@ -815,7 +815,7 @@ https-proxy-agent@^5.0.0:
     agent-base "6"
     debug "4"
 
-hubot-matteruser@^5.3.1:
+hubot-matteruser@5.3.1:
   version "5.3.1"
   resolved "https://registry.yarnpkg.com/hubot-matteruser/-/hubot-matteruser-5.3.1.tgz#2c265fbd1282d349dc3480fe87799add51be4e57"
   integrity sha512-T3QEisQV0iNYihN6XQF7UF4DP40KH2/9scCHtvW+sMj7j18Iiokg3i3tWZF8zoksgV2eN3UDUWpIb1rnFScaIQ==
@@ -1134,7 +1134,7 @@ node-forge@^0.9.0:
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.9.1.tgz#775368e6846558ab6676858a4d8c6e8d16c677b5"
   integrity sha512-G6RlQt5Sb4GMBzXvhfkeFmbqR6MzhtnT7VTHuLadjkii3rdYHNdw0m8zA4BTxVIh68FicCQ2NSUANpsqkr9jvQ==
 
-node-gyp@^7.0.0:
+node-gyp@7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/node-gyp/-/node-gyp-7.0.0.tgz#2e88425ce84e9b1a4433958ed55d74c70fffb6be"
   integrity sha512-ZW34qA3CJSPKDz2SJBHKRvyNQN0yWO5EGKKksJc+jElu9VA468gwJTyTArC1iOXU7rN3Wtfg/CMt/dBAOFIjvg==
