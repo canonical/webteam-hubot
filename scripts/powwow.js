@@ -32,7 +32,7 @@ module.exports = function(robot) {
         }
 
         if (data.secret && data.secret === SECRET_KEY) {
-	          robot.messageRoom(query.room, "😎 Hey hey hey, remember to add some questions in the form to get a great Powwow Quiz this Friday: https://forms.gle/j7J2Bbvo7usN7eqX9");
+	          robot.messageRoom(query.room, "😎 Hey hey hey @webteam, remember to add some questions in the form to get a great Powwow Quiz this Friday: https://forms.gle/j7J2Bbvo7usN7eqX9");
         } else {
             res.send("Invalid secret");
         }
