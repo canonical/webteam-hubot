@@ -1,17 +1,8 @@
 {
   "extends": [
-    "config:base",
-    "schedule:monthly",
-    "group:all"
+    "github>canonical-web-and-design/renovate-websites"
   ],
-  "packageRules": [
-    {
-      "depTypeList": ["devDependencies"],
-      "extends": [":automergeMinor"]
-    }
-  ],
-  "ignoreDeps": [
-    "coffeescript",
-    "hubot-irc"
+  "ignoreDeps": [	
+    "coffeescript"
   ]
 }
