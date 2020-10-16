@@ -3,10 +3,14 @@
 # Build stage: Install yarn dependencies
 # ===
 FROM ubuntu:focal AS yarn-dependencies
+
 WORKDIR /srv
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install nodejs npm git --yes
+
 ADD package.json .
-RUN npm install -g yarn
+ADD yarn.lock .
+
+RUN npm install -g yarn@1.22.5
 RUN --mount=type=cache,target=/usr/local/share/.cache/yarn yarn install
 
 # Build the production image
@@ -24,7 +28,6 @@ RUN rm -rf package.json yarn.lock .babelrc webpack.config.js Gemfile Gemfile.loc
 COPY --from=yarn-dependencies srv/node_modules node_modules/
 
 ARG BUILD_ID
-
 ENTRYPOINT ["bin/hubot", "-a", "matteruser"]
 
 CMD ["0.0.0.0:80"]
