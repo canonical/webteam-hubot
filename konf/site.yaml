@@ -49,3 +49,7 @@ env:
     secretKeyRef:
       key: hubot-mattermost-token
       name: irc-secrets
+  - name: DISCOURSE_WEBHOOK_SECRET
+    secretKeyRef:
+      key: discourse-webhook-secret
+      name: irc-secrets
