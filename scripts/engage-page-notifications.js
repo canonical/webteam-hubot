@@ -44,9 +44,14 @@ module.exports = async function(robot) {
           return res.end("");
         }
 
+        if (req.headers["x-discourse-event"] !== "topic_created") {
+          res.send("Nothing to do for this event type");
+          return res.end("");
+        }
+
         if (!query.rooms) {
           res.send("Parameters rooms required");
-          res.end("");
+          return res.end("");
         }
 
         var rooms = query.rooms.split(',');
