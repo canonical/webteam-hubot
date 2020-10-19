@@ -50,10 +50,10 @@ module.exports = async function(robot) {
         }
 
         var rooms = query.rooms.split(',');
-        var { id, title, slug, created_by } = data.topic;
-        var user = created_by.name || created_by.username;
-        var topicURL = req.headers["x-discourse-instance"] + "/t/" + slug + "/" + id;
-        var message = "New engage page ['" + title + "'](" + topicURL + ") created by " + user;
+        var { title, slug, created_by } = data.topic;
+        var authorName = created_by.name || created_by.username;
+        var pageURL = "https://ubuntu.com/engage/" + slug;
+        var message = "New engage page ['" + title + "'](" + pageURL + ") created by " + authorName;
 
         await sendMessages(robot, rooms, message);
 
