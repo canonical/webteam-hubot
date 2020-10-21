@@ -56,6 +56,10 @@ module.exports = function(robot) {
   // Respond to morning/night and attempt to not send the greeting when users
   // are responding to another user's greeting.
   robot.hear(/^(goo+d )?(mo+rning|night) ?(.*)?/i, function(res) {
+    if (!["Shell", "web--design"].includes(res.message.room)) {
+      return
+    }
+
     const user = res.envelope.user.name;
     // Get the text following the greeting.
     const remainder = res.match[3];
