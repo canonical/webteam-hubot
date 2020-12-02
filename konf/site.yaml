@@ -53,3 +53,11 @@ env:
     secretKeyRef:
       key: discourse-webhook-secret
       name: irc-secrets
+  - name: GRAFANA_USERNAME
+    secretKeyRef:
+      key: grafana-username
+      name: irc-secrets
+  - name: GRAFANA_PASSWORD
+    secretKeyRef:
+      key: grafana-password
+      name: irc-secrets
