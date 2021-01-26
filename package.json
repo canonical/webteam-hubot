@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "coffeescript": "1.6.3",
-    "google-spreadsheet": "3.0.14",
+    "google-spreadsheet": "3.1.15",
     "graphql-request": "1.8.2",
     "hubot": "3.3.2",
     "hubot-matteruser": "5.4.1",
