@@ -37,33 +37,24 @@ async function requestPullRequests(authors) {
 
     var query =  `
       {
-        search(query: "org:canonical-web-and-design is:pr is:open archived:false ${authors_query}", type: ISSUE, last: 100) {
-          edges {
-            node {
-              ... on PullRequest {
-                url
-                title
-                author {login}
-                createdAt
-              }
-            }
-          }
+        search(query: "org:canonical-web-and-design is:pr is:open archived:false ${authors_query}", type: ISSUE) {
+          issueCount
         }
       }`;
 
     const data = await graphQuery(query);
-    return data["search"]["edges"];
+    return data["search"]["issueCount"];
 }
 
 async function sendNumberOpenedPullRequests(res, robot, rooms, authors) {
-    var pr = await requestPullRequests(authors);
+    var issueCount = await requestPullRequests(authors);
 
     var authors_query = "";
     authors.forEach(function (author) {
         authors_query = authors_query.concat("+author%3A" + author);
     });
 
-    var message = "[webteam-pr] 📋 There are " + pr.length + " pull-requests open. You can find the list [here](https://github.com/search?q=org%3Acanonical-web-and-design+is%3Apr+is%3Aopen+archived%3Afalse" + authors_query + ")";
+    var message = "[webteam-pr] 📋 There are " + issueCount + " pull-requests open. You can find the list [here](https://github.com/search?q=org%3Acanonical-web-and-design+is%3Apr+is%3Aopen+archived%3Afalse" + authors_query + ") or on [this dasboard](https://datastudio.google.com/u/1/reporting/4599ef41-f50d-4ace-b269-e6225a9b30e0/page/eTcwB)";
 
     if (rooms) {
         rooms.forEach(function (room) {
