@@ -11,7 +11,8 @@
   "dependencies": {
     "coffeescript": "1.6.3",
     "google-spreadsheet": "3.1.15",
-    "graphql-request": "1.8.2",
+    "graphql": "^15.5.0",
+    "graphql-request": "3.4.0",
     "hubot": "3.3.2",
     "hubot-matteruser": "5.4.1",
     "node-gyp": "7.1.2",
