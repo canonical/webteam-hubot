@@ -81,7 +81,7 @@ announcePullRequest = (data, cb) ->
             .replace /review: /, "review-"
 
       labels = labels.filter (x) -> typeof x == 'string'
-      labels_line = "Labels: #{labels.join(",")}"
+      labels_line = "Labels: #{labels.join(", ")}"
     else
       labels_line = ""
 
