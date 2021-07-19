@@ -54,7 +54,7 @@ async function sendNumberOpenedPullRequests(res, robot, rooms, authors) {
         authors_query = authors_query.concat("+author%3A" + author);
     });
 
-    var message = "[webteam-pr] 📋 There are " + issueCount + " pull-requests open. You can find the list [here](https://github.com/search?q=org%3Acanonical-web-and-design+is%3Apr+is%3Aopen+archived%3Afalse" + authors_query + ") or on [this dashboard](https://datastudio.google.com/u/1/reporting/4599ef41-f50d-4ace-b269-e6225a9b30e0/page/eTcwB)";
+    var message = "[webteam-pr] 📋 There are " + issueCount + " pull-requests open. You can find the list [here](https://github.com/search?q=org%3Acanonical-web-and-design+is%3Apr+is%3Aopen+archived%3Afalse" + authors_query + ") or on [this dashboard](https://datastudio.google.com/reporting/4599ef41-f50d-4ace-b269-e6225a9b30e0). Of course don't forget to look at the [Renovate/dependabot leaderboard](https://datastudio.google.com/reporting/4a7e2af0-dbd6-4063-91d0-f0b3b7849ab7).";
 
     if (rooms) {
         rooms.forEach(function (room) {
