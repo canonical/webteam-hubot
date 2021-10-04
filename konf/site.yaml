@@ -45,9 +45,13 @@ env:
     secretKeyRef:
       key: hubot-github-token
       name: irc-secrets
-  - name: MATTERMOST_TOKEN
+  - name: MATTERMOST_TOKEN_CMD_ACRONYM
     secretKeyRef:
-      key: hubot-mattermost-token
+      key: hubot-mattermost-token-cmd-acronym
+      name: irc-secrets
+  - name: MATTERMOST_TOKEN_CMD_MEET
+    secretKeyRef:
+      key: hubot-mattermost-token-cmd-meet
       name: irc-secrets
   - name: DISCOURSE_WEBHOOK_SECRET
     secretKeyRef:

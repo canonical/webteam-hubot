@@ -8,7 +8,7 @@
 //   POST /hubot/meet
 //     Follows format suggested here: https://docs.mattermost.com/developer/slash-commands.html
 //     data:
-//       token: Should be similar than MATTERMOST_TOKEN
+//       token: Should be similar than MATTERMOST_TOKEN_CMD_MEET
 //       text: participants
 //     response:
 //       {"response_type": "in_channel", "text": TEXT_POSTED}
@@ -16,8 +16,8 @@
 // Authors:
 //   Hackday: wgx, jkfran, nottrobin
 
-var MATTERMOST_TOKEN = process.env.MATTERMOST_TOKEN;
-if (!MATTERMOST_TOKEN) {
+var MATTERMOST_TOKEN_CMD_MEET = process.env.MATTERMOST_TOKEN_CMD_MEET;
+if (!MATTERMOST_TOKEN_CMD_MEET) {
     console.log("Missing MATTERMOST_TOKEN in environment");
 }
 
@@ -33,7 +33,7 @@ module.exports = function(robot) {
     });
 
     robot.router.post("/hubot/meet", async function(req, res) {
-        if (MATTERMOST_TOKEN != req.body.token) {
+        if (MATTERMOST_TOKEN_CMD_MEET != req.body.token) {
             res.sendStatus(401);
             return res.end("");
         }

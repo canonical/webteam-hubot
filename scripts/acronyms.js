@@ -8,7 +8,7 @@
 //   set HUBOT_SPREADSHEET_ID in environment
 //   set HUBOT_SPREADSHEET_CLIENT_EMAIL in environment
 //   set HUBOT_SPREADSHEET_PRIVATE_KEY in environment
-//   set MATTERMOST_TOKEN in environment
+//   set MATTERMOST_TOKEN_CMD_ACRONYM in environment
 //
 // Commands:
 //   hubot acronym <acronym>: translates the acronym to human readable words
@@ -17,7 +17,7 @@
 //   POST /hubot/acronym
 //     Follows format suggested here: https://docs.mattermost.com/developer/slash-commands.html
 //     data:
-//       token: Should be similar than MATTERMOST_TOKEN
+//       token: Should be similar than MATTERMOST_TOKEN_CMD_ACRONYM
 //       text: acronym
 //     response:
 //       {"response_type": "ephemeral", "text": TEXT_POSTED}
@@ -63,9 +63,9 @@ if (HTTPS_PROXY) {
     doc.axios.defaults.httpsAgent = new HttpsProxyAgent(HTTPS_PROXY);
 }
 
-var MATTERMOST_TOKEN = process.env.MATTERMOST_TOKEN;
-if (!MATTERMOST_TOKEN) {
-    console.log("Missing MATTERMOST_TOKEN in environment");
+var MATTERMOST_TOKEN_CMD_ACRONYM = process.env.MATTERMOST_TOKEN_CMD_ACRONYM;
+if (!MATTERMOST_TOKEN_CMD_ACRONYM) {
+    console.log("Missing MATTERMOST_TOKEN_CMD_ACRONYM in environment");
 }
 
 async function googleSpreadsheetHandler(acronym) {
@@ -100,7 +100,7 @@ module.exports = function(robot) {
     });
 
     robot.router.post("/hubot/acronym", async function(req, res) {
-        if (MATTERMOST_TOKEN != req.body.token) {
+        if (MATTERMOST_TOKEN_CMD_ACRONYM != req.body.token) {
             res.sendStatus(401);
             return res.end("");
         }
