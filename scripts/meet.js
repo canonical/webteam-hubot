@@ -11,10 +11,10 @@
 //       token: Should be similar than MATTERMOST_TOKEN
 //       text: participants
 //     response:
-//       {"response_type": "ephemeral", "text": TEXT_POSTED}
+//       {"response_type": "in_channel", "text": TEXT_POSTED}
 //
 // Authors:
-//   
+//   Hackday: wgx, jkfran, nottrobin
 
 var MATTERMOST_TOKEN = process.env.MATTERMOST_TOKEN;
 if (!MATTERMOST_TOKEN) {
@@ -31,7 +31,7 @@ module.exports = function(robot) {
         res.send("Your meet is ready: " + await generateMeetLink(res.match[1]));
     });
 
-    robot.router.post("/hubot/acronym", async function(req, res) {
+    robot.router.post("/hubot/meet", async function(req, res) {
         if (MATTERMOST_TOKEN != req.body.token) {
             res.sendStatus(401);
             return res.end("");
