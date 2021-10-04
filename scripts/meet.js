@@ -37,7 +37,7 @@ module.exports = function(robot) {
             return res.end("");
         }
 
-        let result = `Format: \`/meet @{username} [@{username} ...]\``;
+        let result = `Create a new Meet and post the link to the current channel, format: \`/meet @{username} [@{username} ...]\``;
 
         if (req.body.text) {
             if (req.body.text.trim() != 'help') {
