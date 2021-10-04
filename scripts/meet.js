@@ -22,13 +22,14 @@ if (!MATTERMOST_TOKEN) {
 }
 
 async function generateMeetLink(participants) {
-    return "https://g.co/meet/" + participants.replace(/@/g, "").replace(/ /g, "-");
+    let code = participants.replace(/@/g, "").replace(/ /g, "-").slice(0, 59);
+    return "https://g.co/meet/" + code
 }
 
 
 module.exports = function(robot) {
     robot.respond(/meet (.*)/, async function(res) {
-        res.send("Your meet is ready: " + await generateMeetLink(res.match[1]));
+        res.send("Your Meet is ready: " + await generateMeetLink(res.match[1]));
     });
 
     robot.router.post("/hubot/meet", async function(req, res) {
