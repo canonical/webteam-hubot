@@ -47,7 +47,7 @@ module.exports = function(robot) {
         }
 
         res.setHeader('content-type', 'application/json');
-        res.send(JSON.stringify({"response_type": "in_channel", "text": result}));
+        res.send(JSON.stringify({"response_type": "in_channel", "icon_url": "https://assets.ubuntu.com/v1/fa583301-meet-bot-logo.png", "text": result}));
         return res.end("");
     });
 };
