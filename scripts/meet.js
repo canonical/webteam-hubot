@@ -38,7 +38,7 @@ module.exports = function(robot) {
             return res.end("");
         }
 
-        let result = `Create a new Meet and post the link to the current channel, format: \`/meet @{username} [@{username} ...]\``;
+        let result = `Create a new Meet and post the link to the current channel, format: \`/meet @{username} [@{username} ...]\` If you have multiple signed-in Google accounts, you may get unexpected results.`;
 
         if (req.body.text) {
             if (req.body.text.trim() != 'help') {
