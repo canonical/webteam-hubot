@@ -21,21 +21,25 @@ if (!MATTERMOST_TOKEN_CMD_MEET) {
     console.log("Missing MATTERMOST_TOKEN_CMD_MEET in environment");
 }
 
-async function cmdOutput(participants) {
+async function cmdOutput(creator, participants) {
     let link = await generateMeetLink(participants)
-    let code = participants.replace(/@/g, "").replace(/ /g, "-").slice(0, 59);
-    return "### ![Meet](https://assets.ubuntu.com/v1/fa583301-meet-bot-logo.png =50 'Meet icon') Your Meet is ready\n[Click here to join](" + link + ")\nAttendees:  " + participants
+
+    return '| ![Meet](https://assets.ubuntu.com/v1/fa583301-meet-bot-logo.png =50 "Meet icon") Your Meet is ready  |\n' +
+            '|:---------------|\n' +
+            '| **Creator:** ' + creator + ' |\n' +
+            '| **Attendees:** ' + participants + ' |\n' +
+            '| [![Meet](https://assets.ubuntu.com/v1/26764e76-button.png =120 "Meet icon")](' + link + ') | ';
 }
 
 async function generateMeetLink(participants) {
     let code = participants.replace(/@/g, "").replace(/ /g, "-").slice(0, 59);
-    return "https://accounts.google.com/AccountChooser/signinchooser?flowName=GlifWebSignIn&flowEntry=AccountChooser&continue=https://g.co/meet/" + code
+    return "https://accounts.google.com/AccountChooser/signinchooser?flowName=GlifWebSignIn&flowEntry=AccountChooser&continue=https://meet.google.com/lookup/" + code
 }
 
 
 module.exports = function(robot) {
     robot.respond(/meet (.*)/, async function(res) {
-        res.send(await cmdOutput(res.match[1]));
+        res.send(await cmdOutput(res.envelope.user.name, res.match[1]));
     });
 
     robot.router.post("/hubot/meet", async function(req, res) {
@@ -49,7 +53,7 @@ module.exports = function(robot) {
         if (req.body.text) {
             if (req.body.text.trim() != 'help') {
                 robot.logger.info('Meet participants: ' + req.body.text);
-                result = await cmdOutput(req.body.text);
+                result = await cmdOutput(req.body.user_name, req.body.text);
             }
         }
 
