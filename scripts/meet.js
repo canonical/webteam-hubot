@@ -21,16 +21,21 @@ if (!MATTERMOST_TOKEN_CMD_MEET) {
     console.log("Missing MATTERMOST_TOKEN_CMD_MEET in environment");
 }
 
-async function generateMeetLink(participants) {
-    let participantsList = participants;
+async function cmdOutput(participants) {
+    let link = await generateMeetLink(participants)
     let code = participants.replace(/@/g, "").replace(/ /g, "-").slice(0, 59);
-    return "Your Meet is ready: https://g.co/meet/" + code + " " + participantsList
+    return "### ![Meet](https://assets.ubuntu.com/v1/fa583301-meet-bot-logo.png =50 'Meet icon') Your Meet is ready\n[Click here to join](" + link + ")\nAttendees:  " + participants
+}
+
+async function generateMeetLink(participants) {
+    let code = participants.replace(/@/g, "").replace(/ /g, "-").slice(0, 59);
+    return "https://accounts.google.com/AccountChooser/signinchooser?flowName=GlifWebSignIn&flowEntry=AccountChooser&continue=https://g.co/meet/" + code
 }
 
 
 module.exports = function(robot) {
     robot.respond(/meet (.*)/, async function(res) {
-        res.send(await generateMeetLink(res.match[1]));
+        res.send(await cmdOutput(res.match[1]));
     });
 
     robot.router.post("/hubot/meet", async function(req, res) {
@@ -44,7 +49,7 @@ module.exports = function(robot) {
         if (req.body.text) {
             if (req.body.text.trim() != 'help') {
                 robot.logger.info('Meet participants: ' + req.body.text);
-                result = await generateMeetLink(req.body.text);
+                result = await cmdOutput(req.body.text);
             }
         }
 
