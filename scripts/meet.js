@@ -18,18 +18,19 @@
 
 var MATTERMOST_TOKEN_CMD_MEET = process.env.MATTERMOST_TOKEN_CMD_MEET;
 if (!MATTERMOST_TOKEN_CMD_MEET) {
-    console.log("Missing MATTERMOST_TOKEN in environment");
+    console.log("Missing MATTERMOST_TOKEN_CMD_MEET in environment");
 }
 
 async function generateMeetLink(participants) {
+    let participantsList = participants;
     let code = participants.replace(/@/g, "").replace(/ /g, "-").slice(0, 59);
-    return "https://g.co/meet/" + code
+    return "Your Meet is ready: https://g.co/meet/" + code + " " + participantsList
 }
 
 
 module.exports = function(robot) {
     robot.respond(/meet (.*)/, async function(res) {
-        res.send("Your Meet is ready: " + await generateMeetLink(res.match[1]));
+        res.send(await generateMeetLink(res.match[1]));
     });
 
     robot.router.post("/hubot/meet", async function(req, res) {
