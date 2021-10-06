@@ -53,6 +53,10 @@ env:
     secretKeyRef:
       key: hubot-mattermost-token-cmd-meet
       name: irc-secrets
+  - name: MATTERMOST_TOKEN_CMD_DIR
+    secretKeyRef:
+      key: hubot-mattermost-token-cmd-dir
+      name: irc-secrets
   - name: DISCOURSE_WEBHOOK_SECRET
     secretKeyRef:
       key: discourse-webhook-secret
