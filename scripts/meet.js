@@ -24,12 +24,12 @@ if (!MATTERMOST_TOKEN_CMD_MEET) {
 async function cmdOutput(creator, participants) {
     let link = await generateMeetLink(participants)
 
-    return '| ![Meet](https://assets.ubuntu.com/v1/fa583301-meet-bot-logo.png =50 "Meet icon") Your Meet is ready  |\n' +
+    return '| ![Meet](https://assets.ubuntu.com/v1/fa583301-meet-bot-logo.png =36 "Meet icon") [![Meet](https://assets.ubuntu.com/v1/26764e76-button.png =120 "Meet icon")](' + link + ') |\n' +
             '|:---------------|\n' +
-            '| **Creator:** ' + creator + ' |\n' +
-            '| **Attendees:** ' + participants + ' |\n' +
-            '| [![Meet](https://assets.ubuntu.com/v1/26764e76-button.png =120 "Meet icon")](' + link + ') | ';
+            '| **Attendees:** ' + creator + ' ' + participants + ' |\n' +
+            '|  | ';
 }
+
 
 async function generateMeetLink(participants) {
     let code = participants.replace(/@/g, "").replace(/ /g, "-").slice(0, 59);
