@@ -41,10 +41,12 @@ const getTimezoneInfo = async (argument) => {
 
     if (lpResponse.status === 200) {
       const dom = new JSDOM(await lpResponse.text());
-      const timeZone = dom.window.document
-        .querySelector("#timezone dd")
-        ?.innerHTML.split(" ")[0]
-        ?.trim();
+      const timeZoneContainer = dom.window.document.querySelector(
+        "#timezone dd"
+      );
+      const timeZone = timeZoneContainer
+        ? timeZoneContainer.innerHTML.split(" ")[0].trim()
+        : undefined;
 
       if (timeZone) {
         const localTime = new Date()
