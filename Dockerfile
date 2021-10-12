@@ -18,6 +18,7 @@ FROM ubuntu:hirsute
 # Set up environment
 ENV LANG C.UTF-8
 WORKDIR /srv
+RUN apt-get --allow-unauthenticated update && apt-get install gnupg --yes
 RUN apt-get update && apt-get install nodejs --yes
 
 # Import code, build assets and mirror list
