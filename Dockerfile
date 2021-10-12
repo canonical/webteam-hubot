@@ -2,15 +2,13 @@
 
 # Build stage: Install yarn dependencies
 # ===
-FROM ubuntu:focal AS yarn-dependencies
+FROM node:lts-slim AS yarn-dependencies
 
 WORKDIR /srv
-RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install nodejs npm git --yes
 
 ADD package.json .
 ADD yarn.lock .
 
-RUN npm install -g yarn@1.22.5
 RUN --mount=type=cache,target=/usr/local/share/.cache/yarn yarn install
 
 # Build the production image
