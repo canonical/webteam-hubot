@@ -13,7 +13,7 @@ RUN --mount=type=cache,target=/usr/local/share/.cache/yarn yarn install
 
 # Build the production image
 # ===
-FROM ubuntu:hirsute
+FROM ubuntu:focal
 
 # Set up environment
 ENV LANG C.UTF-8
