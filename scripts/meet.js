@@ -24,7 +24,7 @@ if (!MATTERMOST_TOKEN_CMD_MEET) {
 async function cmdOutput(creator, participants) {
     let link = await generateMeetLink(participants)
 
-    return '| ![Meet](https://assets.ubuntu.com/v1/fa583301-meet-bot-logo.png =36 "Meet icon") [Join Meet](' + link + ') |\n' +
+    return '| ![Meet](https://assets.ubuntu.com/v1/f6017d02-mattermeet36px.png "Mattermeet icon") [Join Meet](' + link + ') |\n' +
             '|:---------------|\n' +
             '| **Attendees:** ' + creator + ' ' + participants + ' |\n' +
             '|  | ';
