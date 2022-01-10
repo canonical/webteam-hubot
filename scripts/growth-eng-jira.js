@@ -56,7 +56,7 @@ module.exports = function(robot) {
   }
 
   robot.hear(/^jira (.+)/i, async function(res) {
-    if (!["Shell", "growth-eng"].includes(res.message.room)) {
+    if (!["Shell", "growth-eng", "ge-webbot-test"].includes(res.message.room)) {
       return;
     }
     if (res.message.text) {
