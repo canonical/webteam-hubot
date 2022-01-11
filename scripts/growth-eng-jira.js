@@ -55,7 +55,7 @@ module.exports = function(robot) {
     res.send(`Created ${card_title} for ${user}`);
   }
 
-  robot.hear(/^jira (.+)/i, async function(res) {
+  robot.respond(/[jJ]ira (.+)/, async function(res) {
     if (!["Shell", "growth-eng"].includes(res.message.room)) {
       return;
     }
