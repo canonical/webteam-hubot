@@ -57,10 +57,11 @@ module.exports = function(robot) {
 
   robot.respond(/[jJ]ira (.+)/, async function(res) {
     if (!["Shell", "growth-eng", "ge-webbot-test"].includes(res.message.room)) {
+      robot.logger.info(`Command jira used in wrong channel ${res.message.room}`);
       return;
     }
-    if (res.message.text) {
-      const card_title  = res.message.text.substr(res.message.text.indexOf(" ") + 1);
+    if (res.match[1]) {
+      const card_title  = res.match[1];
       robot.logger.info('growth-eng-jira: ' + card_title.trim());
       result = await googleSpreadsheetHandler(card_title.trim(), res.envelope.user.name);
       updateSheet(card_title, res);
