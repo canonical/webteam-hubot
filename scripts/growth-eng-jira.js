@@ -56,7 +56,7 @@ module.exports = function(robot) {
   }
 
   robot.respond(/[jJ]ira (.+)/, async function(res) {
-    if (!["Shell", "growth-eng", "ge-webbot-test"].includes(res.message.room)) {
+    if (!["Shell", "1ienqr4z9bbn5qmo3k6u8brm7e", "4yyhfpad73bizbf1wr1jubcp3y  "].includes(res.message.room)) {
       robot.logger.info(`Command jira used in wrong channel ${res.message.room}`);
       return;
     }
