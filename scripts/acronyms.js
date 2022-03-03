@@ -100,7 +100,6 @@ module.exports = function(robot) {
     });
 
     robot.router.post("/hubot/acronym", async function(req, res) {
-        console.log(res)
         if (MATTERMOST_TOKEN_CMD_ACRONYM != req.body.token) {
             res.sendStatus(401);
             return res.end("");
