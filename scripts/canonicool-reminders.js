@@ -66,8 +66,68 @@ module.exports = async function (robot) {
         postOptions
       );
     });
+
   });
   robot.router.post("/hubot/canonicool-reminders-check", async function (req, res) {
-    console.log("Hellow!");
+    const two_hours_in_ms = 7200000;
+    const since = new Date().valueOf() - two_hours_in_ms;
+
+    robot
+      .http(
+        `https://chat.canonical.com/api/v4/channels/dewj9q7uk3d8pymujaez9ksyny/posts?since=${since}`
+      )
+      .header("Authorization", `Bearer ${MATTERMOST_ACCESS_TOKEN}`)
+      .header("Content-Type", "application/json")
+      .get()(function (err, _, body) {
+        const posts = JSON.parse(body)["posts"];
+        let latest_canonicool_reminder = null;
+
+        for (let key in posts) {
+          const post = posts[key];
+          const message = post["message"];
+          if (message.includes("You're up to present at this week's Canonicool.")) {
+            if (latest_canonicool_reminder === null) {
+              latest_canonicool_reminder = post;
+            }
+
+            if (latest_canonicool_reminder["create_at"] < post["create_at"]) {
+              latest_canonicool_reminder = post;
+            }
+          }
+        }
+
+        metadata = latest_canonicool_reminder["metadata"];
+        reactions = metadata["reactions"];
+
+        if (reactions) {
+          users_cancelled = []
+          reactions.forEach(reaction => {
+            if(reaction["emoji_name"] === "x" && reaction["user_id"] !== "q8yjh4wxupnw5jm5qw4omuw8zw") {
+              users_cancelled.push(reaction["user_id"]);
+            }
+          })
+
+          if (users_cancelled.lenght > 0) {
+            user_ids_data = JSON.stringify(users_cancelled);
+            robot
+              .http(`https://chat.canonical.com/api/v4/users/ids`)
+              .header("Authorization", `Bearer ${MATTERMOST_ACCESS_TOKEN}`)
+              .header("Content-Type", "application/json")
+              .post(user_ids_data)(function (err, _, body) {
+                const users = JSON.parse(body);
+
+                users.forEach(user => {
+                  username = user["username"];
+
+                  // call cancel api for this user
+                });
+
+                if (err) {
+                  console.log(err);
+                }
+              });
+          }
+        }
+      });
   });
 };
