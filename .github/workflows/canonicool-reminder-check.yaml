@@ -7,4 +7,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Every time
-        run: curl -X POST localhost:8080/hubot/canonicool-reminders-check
+        run: curl -X POST https://webteam-ircbot.canonical.com/hubot/canonicool-reminders-check
