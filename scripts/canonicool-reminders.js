@@ -17,79 +17,54 @@
 // Authors:
 //   bethcollins92 ClementChaumel
 
+const axios = require("axios");
 const MATTERMOST_ACCESS_TOKEN = process.env.MATTERMOST_ACCESS_TOKEN;
 
 module.exports = async function (robot) {
   robot.router.post("/hubot/canonicool-reminders", async function (req, res) {
-    options = {
-        followRedirects: true,
-        contentType: 'application/json',
-    }
+    const getOptions = {
+      followRedirects: true,
+      contentType: "application/json",
+    };
 
-    robot.http("https://script.google.com/a/macros/canonical.com/s/AKfycbyy9SW-G_0-PVUrv2hJDMTeCH2XQrrPDXlQUmOsjFQw3tXItPPagLCk_y61J62G6l12dA/exec?action=getAll", options)
-      .get()(function (err, _, body) {
-        console.log(body);
-        const data = JSON.parse(body);
-        if (err) {
-          console.log(err);
-        }
-        const person1 = data[0].title;
-        const person2 = data[1].title;
-        const person3 = data[2].title;
+    const postOptions = {
+      contentType: "application/json",
+      headers: {
+        Authorization: "Bearer " + MATTERMOST_ACCESS_TOKEN,
+      },
+    };
 
-        const post_data = JSON.stringify({
-          channel_id: "dewj9q7uk3d8pymujaez9ksyny",
-          message: `@${person1}, @${person2} and @${person3}: You're up to present at this week's Canonicool. Please add abfjbfrej`
-        });
+    const url =
+      "https://script.google.com/macros/s/AKfycbx63w1r5LW7PbfeyvEsMYH5B0ob2Mg9v1yr7Uwm1aI15QTAPGkbd74E_RREPCTTfxS3QA/exec?action=getPresenters";
 
-        robot
-          .http("https://chat.canonical.com/api/v4/posts")
-          .header("Content-Type", "application/json")
-          .header("Authorization", `Bearer ${MATTERMOST_ACCESS_TOKEN}`)
-          .post(post_data)(function (err, _, body) {
-            const data = JSON.parse(body);
+    const presentersData = await axios.get(url, getOptions);
+    const presenters = presentersData.data;
 
-            ["x", "white_check_mark"].forEach(emoji => {
-              const reaction_data = JSON.stringify({
-                post_id: data["id"],
-                emoji_name: emoji,
-                user_id: data["user_id"]
-              });
-
-              robot
-                .http("https://chat.canonical.com/api/v4/reactions")
-                .header("Content-Type", "application/json")
-                .header("Authorization", `Bearer ${MATTERMOST_ACCESS_TOKEN}`)
-                .post(reaction_data)(function (err, _, body) {
-                  const data = JSON.parse(body);
-                  console.log(data);
-
-                  if (err) console.log(err);
-                });
-            })
-
-            if (err) console.log(err);
-          });
-
-    //     robot.messageRoom(
-    //       "me-and-webbot",
-    //       `@${person1}, @${person2} and @${person3}: You're up to present at this week's Canonicool. Please add abfjbfrej`
-    //     );
+    const post_data = JSON.stringify({
+      channel_id: "dewj9q7uk3d8pymujaez9ksyny",
+      message: `@${presenters[0]}, @${presenters[1]} and @${presenters[2]}: You're up to present at this week's Canonicool. Please add abfjbfrej`,
     });
 
-    // console.log("token", MATTERMOST_ACCESS_TOKEN);
-    // robot
-    //   .http(
-    //     "https://chat.canonical.com/api/v4/channels/dewj9q7uk3d8pymujaez9ksyny/posts"
-    //   )
-    //   .header("Authorization", `Bearer ${MATTERMOST_ACCESS_TOKEN}`)
-    //   .header("Content-Type", "application/json")
-    //   .get()(function (err, _, body) {
-    //     console.log(body);
-    //     console.log("I was ehre!");
-    //     if (err) {
-    //       console.log(err);
-    //     }
-    //   });
+    const postRes = await axios.post(
+      "https://chat.canonical.com/api/v4/posts",
+      post_data,
+      postOptions
+    );
+    const postID = postRes.data.id;
+    const userID = postRes.data.user_id;
+
+    ["x", "white_check_mark"].forEach((emoji) => {
+      const reaction_data = JSON.stringify({
+        post_id: postID,
+        emoji_name: emoji,
+        user_id: userID,
+      });
+
+      axios.post(
+        "https://chat.canonical.com/api/v4/reactions",
+        reaction_data,
+        postOptions
+      );
+    });
   });
 };
