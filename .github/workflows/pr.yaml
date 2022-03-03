@@ -2,12 +2,6 @@ name: PR checks
 on: pull_request
 
 jobs:
-  test_schedule:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Every time
-        run: curl -X POST localhost:8080/hubot/canonicool-reminders-check
-
   run-image:
     runs-on: ubuntu-latest
 

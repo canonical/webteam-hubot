@@ -1,0 +1,10 @@
+on:
+  schedule:
+    - cron: "0 */2 * * *"
+
+jobs:
+  test_schedule:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Every time
+        run: curl -X POST localhost:8080/hubot/canonicool-reminders-check
