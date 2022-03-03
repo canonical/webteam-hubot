@@ -67,4 +67,7 @@ module.exports = async function (robot) {
       );
     });
   });
+  robot.router.post("/hubot/canonicool-reminders-check", async function (req, res) {
+    console.log("Hellow!");
+  });
 };
