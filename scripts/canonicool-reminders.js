@@ -22,22 +22,24 @@ const MATTERMOST_ACCESS_TOKEN = process.env.MATTERMOST_ACCESS_TOKEN;
 
 module.exports = async function (robot) {
   robot.router.post("/hubot/canonicool-reminders", async function (req, res) {
-    const getOptions = {
+    const options = {
       followRedirects: true,
-      contentType: "application/json",
-    };
-
-    const postOptions = {
       contentType: "application/json",
       headers: {
         Authorization: "Bearer " + MATTERMOST_ACCESS_TOKEN,
       },
     };
 
-    const url =
-      "https://script.google.com/macros/s/AKfycbx63w1r5LW7PbfeyvEsMYH5B0ob2Mg9v1yr7Uwm1aI15QTAPGkbd74E_RREPCTTfxS3QA/exec?action=getPresenters";
+    const baseURL =
+      "https://script.google.com/macros/s/AKfycbx63w1r5LW7PbfeyvEsMYH5B0ob2Mg9v1yr7Uwm1aI15QTAPGkbd74E_RREPCTTfxS3QA/exec?action=";
 
-    const presentersData = await axios.get(url, getOptions);
+    const rotateURL = baseURL + "rotate";
+    const presentersURL = baseURL + "getPresenters";
+
+    // Rotate the presenters and send a message to the channel pinging the new ones.
+    axios.post(rotateURL, null, options);
+
+    const presentersData = await axios.get(presentersURL, options);
     const presenters = presentersData.data;
 
     const post_data = JSON.stringify({
@@ -48,7 +50,7 @@ module.exports = async function (robot) {
     const postRes = await axios.post(
       "https://chat.canonical.com/api/v4/posts",
       post_data,
-      postOptions
+      options
     );
     const postID = postRes.data.id;
     const userID = postRes.data.user_id;
@@ -63,7 +65,7 @@ module.exports = async function (robot) {
       axios.post(
         "https://chat.canonical.com/api/v4/reactions",
         reaction_data,
-        postOptions
+        options
       );
     });
   });
