@@ -47,7 +47,7 @@ module.exports = async function (robot) {
     const presentersData = await axios.get(presentersURL, options);
     const presenters = presentersData.data;
 
-    const post_data = JSON.stringify({
+    const postData = JSON.stringify({
       channel_id: channelID,
       message: `:canonicalparty: **Canonicool announcement!** :canonicalparty: 
       **@${presenters[0]}**, **@${presenters[1]}** and **@${presenters[2]}**: You're up to present at this week's Canonicool. 
@@ -56,7 +56,7 @@ module.exports = async function (robot) {
 
     const postRes = await axios.post(
       `${mattermostBaseURL}/posts`,
-      post_data,
+      postData,
       options
     );
     const postID = postRes.data.id;
@@ -104,7 +104,7 @@ module.exports = async function (robot) {
       });
 
       const cancelledUserNames = [];
-      var userRes;
+      let userRes;
       for (const userId of cancelledUserIds) {
         userRes = await axios.get(
           `${mattermostBaseURL}/users/${userId}`,
@@ -113,8 +113,8 @@ module.exports = async function (robot) {
         cancelledUserNames.push(userRes.data.username);
       }
 
-      var presentersData = await axios.get(presentersURL, options);
-      var presenters = presentersData.data;
+      let presentersData = await axios.get(presentersURL, options);
+      let presenters = presentersData.data;
 
       for (const userName of cancelledUserNames) {
         if (presenters.includes(userName)) {
@@ -130,7 +130,7 @@ module.exports = async function (robot) {
           presentersData = await axios.get(presentersURL, options);
           presenters = presentersData.data;
 
-          const post_data = JSON.stringify({
+          const postData = JSON.stringify({
             channel_id: channelID,
             message: `Oh no! Someone can't present this week. @${presenters[2]} would you be able to present? please react with :white_check_mark: or :x: on the message above. :point_up_2: Thanks!`,
             root_id: mostRecentAnnoucement.id,
@@ -138,7 +138,7 @@ module.exports = async function (robot) {
 
           const postRes = await axios.post(
             `${mattermostBaseURL}/posts`,
-            post_data,
+            postData,
             options
           );
         }
