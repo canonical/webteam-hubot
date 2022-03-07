@@ -25,11 +25,11 @@
 // Note:
 //   The format of the spreadsheet should be:
 //
-//   | Acronym | Definition   | Link                                                                                              |
-//   | PR      | Pull-Request | https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests |
+//   | Explain | Definition                            | PM          | Contact | Link                                                                                              |
+//   | MAAS    | MAAS is a fast provisioning tool..... | Anton Smith | ~MAAS   | https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests |
 //
 // Authors:
-//   tbille
+//   tbille, amylily1011
 
 var SPREADSHEET_ID = process.env.HUBOT_SPREADSHEET_ID;
 if (!SPREADSHEET_ID) {
@@ -70,38 +70,35 @@ if (!MATTERMOST_TOKEN_CMD_ACRONYM) {
 
 async function googleSpreadsheetHandler(explain) {
     var explain;
-    //console log input value
-    //console.log("explain: ", explain);
     await doc.useServiceAccountAuth(CREDS);
     await doc.loadInfo();
     const sheet = doc.sheetsByIndex[0];
     const sheet_why = doc.sheetsByIndex[1];
     var rows = await sheet.getRows();
-    //get 'why' rows from sheet[1]
+
+    //get 'why' rows from sheet[1] - "why sheet"
     var why_rows= await sheet_why.getRows();
     var why_rows_length = why_rows.length;
-
-   var random_node = parseInt(Math.floor(Math.random()*(why_rows_length+1)));
-   //console.log('random node:' + random_node);
-
-    var responses = rows.filter(a => a.Explain && a.Explain.toUpperCase().trim() === explain);
+    var random_node = parseInt(Math.floor(Math.random()*(why_rows_length+1)));
     //find the random element in why_row
     var why_text = why_rows.find(a => a.rowIndex == random_node);
-    //console.log(why_text);
     var display_text = why_text.why;
+
+    var responses = rows.filter(a => a.Explain && a.Explain.toUpperCase().trim() === explain);
 
     var text = "";
     responses.forEach(function (response) {
-        if (text) { text = text; }
+       //if (text) { text = text; }
         var link = response.Link ? response.Link : "";
         var definition = response.Definition ? response.Definition : "";
         var MM_Channel = response.Contact ? response.Contact: "";
         var PM = response.PM ? response.PM: "";
-        text = '\n'+ text + '|' + response.Explain + '| ' + definition + '| \n' + '| PM | ' + PM + '| \n' + '| Contact channel | ' + MM_Channel + ' | \n'+ '| Read more | '+ link + '|';
+        var team = response.Team ? response.Team: "";
+        text = '\n'+ text + '|' + response.Explain + '| ' + definition + '| \n' + '| PM | ' + PM + '| \n' + '| Team | ' + team + '| \n' + '| Contact channel | ' + MM_Channel + ' | \n'+ '| Read more | '+ link + '|';
     });
 
 
-    if (explain == 'WHY') {
+    if (explain == 'WHY') { //If the input text is WHY
        return display_text;
     }
     else if(text) {
