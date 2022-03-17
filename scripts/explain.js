@@ -76,7 +76,7 @@ async function googleSpreadsheetHandler(explain) {
     const sheet_why = doc.sheetsByTitle['Why'];
     var rows = await sheet.getRows();
 
-    //get 'why' rows from sheet[1] - "why sheet"
+    //get 'why' rows from sheet['Why']
     var why_rows= await sheet_why.getRows();
     var why_rows_length = why_rows.length;
     var random_node = parseInt(Math.floor(Math.random()*(why_rows_length+1)));
