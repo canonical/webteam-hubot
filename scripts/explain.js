@@ -33,17 +33,17 @@
 
 var SPREADSHEET_ID = process.env.HUBOT_SPREADSHEET_ID;
 if (!SPREADSHEET_ID) {
-    console.log("Missing SPREADSHEET_ID in environment");
+    console.log("Missing HUBOT_SPREADSHEET_ID in environment");
 }
 
 var CLIENT_EMAIL = process.env.HUBOT_SPREADSHEET_CLIENT_EMAIL;
 if (!CLIENT_EMAIL) {
-    console.log("Missing CLIENT_ID in environment");
+    console.log("Missing HUBOT_SPREADSHEET_CLIENT_EMAIL in environment");
 }
 
 var PRIVATE_KEY = process.env.HUBOT_SPREADSHEET_PRIVATE_KEY;
 if (!PRIVATE_KEY) {
-    console.log('Missing PRIVATE_KEY in environment');
+    console.log('Missing HUBOT_SPREADSHEET_PRIVATE_KEY in environment');
 } else {
     PRIVATE_KEY = PRIVATE_KEY.replace(/\\n/g, '\n');
 }
@@ -72,8 +72,8 @@ async function googleSpreadsheetHandler(explain) {
     var explain;
     await doc.useServiceAccountAuth(CREDS);
     await doc.loadInfo();
-    const sheet = doc.sheetsByIndex[0];
-    const sheet_why = doc.sheetsByIndex[1];
+    const sheet = doc.sheetsByTitle['Explain'];
+    const sheet_why = doc.sheetsByTitle['Why'];
     var rows = await sheet.getRows();
 
     //get 'why' rows from sheet[1] - "why sheet"
