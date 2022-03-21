@@ -76,32 +76,32 @@ async function googleSpreadsheetHandler(explain) {
     const sheet_why = doc.sheetsByTitle['Why'];
     var rows = await sheet.getRows();
 
-    //get 'why' rows from sheet['Why']
-    var why_rows= await sheet_why.getRows();
-    var why_rows_length = why_rows.length;
-    var random_node = parseInt(Math.floor(Math.random()*(why_rows_length+1)));
-    //find the random element in why_row
-    var why_text = why_rows.find(a => a.rowIndex == random_node);
-    var display_text = why_text.why;
-
     var responses = rows.filter(a => a.Explain && a.Explain.toUpperCase().trim() === explain);
 
     var text = "";
     responses.forEach(function (response) {
-       //if (text) { text = text; }
         var link = response.Link ? response.Link : "";
         var definition = response.Definition ? response.Definition : "";
         var MM_Channel = response.Contact ? response.Contact: "";
         var PM = response.PM ? response.PM: "";
         var team = response.Team ? response.Team: "";
-        text = '\n'+ text + '|' + response.Explain + '| ' + definition + '| \n' + '| PM | ' + PM + '| \n' + '| Team | ' + team + '| \n' + '| Contact channel | ' + MM_Channel + ' | \n'+ '| Read more | '+ link + '|';
+        text = `\n| ${response.Explain} | ${definition} |\n| PM | ${PM} |\n| Team | ${team} |\n| Contact channel | ${MM_Channel} |\n| Read more | ${link} |`;
     });
 
 
-    if (explain == 'WHY') { //If the input text is WHY
-       return display_text;
+    if (explain == 'WHY') {
+    //If the input text is WHY
+    //get 'why' rows from sheet['Why']
+      var why_rows = await sheet_why.getRows();
+      var why_rows_length = why_rows.length;
+      var random_node = parseInt(Math.floor(Math.random()*(why_rows_length+1)));
+
+    //find the random element in why_row
+      var why_text = why_rows.find(a => a.rowIndex == random_node);
+      var display_text = why_text.why;
+      return display_text;
     }
-    else if(text) {
+    if(text) {
       return text;
     }
     else {
