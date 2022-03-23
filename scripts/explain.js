@@ -100,11 +100,9 @@ async function googleSpreadsheetHandler(explain) {
       var why_text = why_rows.find(a => a.rowIndex == random_node);
       var display_text = why_text.why;
       return display_text;
-    }
-    if(text) {
-      return text;
-    }
-    else {
+    } else {
+        if(text) {
+            return text;}
         return `We cannot explain this product/concept yet. Add your explanation [here](https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID})`;
     }
 }
