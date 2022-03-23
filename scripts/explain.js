@@ -101,7 +101,7 @@ async function googleSpreadsheetHandler(explain) {
       var display_text = why_text.why;
       return display_text;
     } else {
-        if(text) {
+        if (text) {
             return text;}
         return `We cannot explain this product/concept yet. Add your explanation [here](https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID})`;
     }
