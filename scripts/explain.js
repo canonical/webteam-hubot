@@ -33,103 +33,108 @@
 
 var SPREADSHEET_ID = process.env.HUBOT_SPREADSHEET_ID;
 if (!SPREADSHEET_ID) {
-    console.log("Missing HUBOT_SPREADSHEET_ID in environment");
+  console.log("Missing HUBOT_SPREADSHEET_ID in environment");
 }
 
 var CLIENT_EMAIL = process.env.HUBOT_SPREADSHEET_CLIENT_EMAIL;
 if (!CLIENT_EMAIL) {
-    console.log("Missing HUBOT_SPREADSHEET_CLIENT_EMAIL in environment");
+  console.log("Missing HUBOT_SPREADSHEET_CLIENT_EMAIL in environment");
 }
 
 var PRIVATE_KEY = process.env.HUBOT_SPREADSHEET_PRIVATE_KEY;
 if (!PRIVATE_KEY) {
-    console.log('Missing HUBOT_SPREADSHEET_PRIVATE_KEY in environment');
+  console.log("Missing HUBOT_SPREADSHEET_PRIVATE_KEY in environment");
 } else {
-    PRIVATE_KEY = PRIVATE_KEY.replace(/\\n/g, '\n');
+  PRIVATE_KEY = PRIVATE_KEY.replace(/\\n/g, "\n");
 }
 
 var CREDS = {
-    client_email: CLIENT_EMAIL,
-    private_key: PRIVATE_KEY
+  client_email: CLIENT_EMAIL,
+  private_key: PRIVATE_KEY,
 };
 
-const { GoogleSpreadsheet } = require('google-spreadsheet');
+const { GoogleSpreadsheet } = require("google-spreadsheet");
 const doc = new GoogleSpreadsheet(SPREADSHEET_ID);
 
 var HTTPS_PROXY = process.env.HTTPS_PROXY;
 if (HTTPS_PROXY) {
-    doc.axios.defaults.proxy = false;
-    const HttpsProxyAgent = require('https-proxy-agent');
-    doc.axios.defaults.httpsAgent = new HttpsProxyAgent(HTTPS_PROXY);
+  doc.axios.defaults.proxy = false;
+  const HttpsProxyAgent = require("https-proxy-agent");
+  doc.axios.defaults.httpsAgent = new HttpsProxyAgent(HTTPS_PROXY);
 }
 
 var MATTERMOST_TOKEN_CMD_ACRONYM = process.env.MATTERMOST_TOKEN_CMD_ACRONYM;
 if (!MATTERMOST_TOKEN_CMD_ACRONYM) {
-    console.log("Missing MATTERMOST_TOKEN_CMD_ACRONYM in environment");
+  console.log("Missing MATTERMOST_TOKEN_CMD_ACRONYM in environment");
 }
 
 async function googleSpreadsheetHandler(explain) {
-    var explain;
-    await doc.useServiceAccountAuth(CREDS);
-    await doc.loadInfo();
-    const sheet = doc.sheetsByTitle['Explain'];
-    const sheet_why = doc.sheetsByTitle['Why'];
-    var rows = await sheet.getRows();
+  var explain;
+  await doc.useServiceAccountAuth(CREDS);
+  await doc.loadInfo();
+  const sheet = doc.sheetsByTitle["Explain"];
+  const sheet_why = doc.sheetsByTitle["Why"];
 
-    var responses = rows.filter(a => a.Explain && a.Explain.toUpperCase().trim() === explain);
-
-    var text = "";
-    responses.forEach(function (response) {
-        var link = response.Link ? response.Link : "";
-        var definition = response.Definition ? response.Definition : "";
-        var MM_Channel = response.Contact ? response.Contact: "";
-        var PM = response.PM ? response.PM: "";
-        var team = response.Team ? response.Team: "";
-        text = `\n| ${response.Explain} | ${definition} |\n| PM | ${PM} |\n| Team | ${team} |\n| Contact channel | ${MM_Channel} |\n| Read more | ${link} |`;
-    });
-
-
-    if (explain == 'WHY') {
+  if (explain == "WHY") {
     //If the input text is WHY
     //get 'why' rows from sheet['Why']
-      var why_rows = await sheet_why.getRows();
-      var why_rows_length = why_rows.length;
-      var random_node = parseInt(Math.floor(Math.random()*(why_rows_length+1)));
+    var why_rows = await sheet_why.getRows();
+    var why_rows_length = why_rows.length;
+    var random_node = parseInt(
+      Math.floor(Math.random() * (why_rows_length + 1))
+    );
 
     //find the random element in why_row
-      var why_text = why_rows.find(a => a.rowIndex == random_node);
-      var display_text = why_text.why;
-      return display_text;
-    } else {
-        if (text) {
-            return text;}
-        return `We cannot explain this product/concept yet. Add your explanation [here](https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID})`;
+    var why_text = why_rows.find((a) => a.rowIndex == random_node);
+    var display_text = why_text.why;
+    return display_text;
+  } else {
+    var rows = await sheet.getRows();
+    var responses = rows.filter(
+      (a) => a.Explain && a.Explain.toUpperCase().trim() === explain
+    );
+    var text = "";
+    responses.forEach(function (response) {
+      var link = response.Link ? response.Link : "";
+      var definition = response.Definition ? response.Definition : "";
+      var MM_Channel = response.Contact ? response.Contact : "";
+      var PM = response.PM ? response.PM : "";
+      var team = response.Team ? response.Team : "";
+      text = `\n| ${response.Explain} | ${definition} |\n| PM | ${PM} |\n| Team | ${team} |\n| Contact channel | ${MM_Channel} |\n| Read more | ${link} |`;
+    });
+
+    if (text) {
+      return text;
     }
+    return `We cannot explain this product/concept yet. Add your explanation [here](https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID})`;
+  }
 }
 
-module.exports = function(robot) {
-    robot.respond(/explain (.*)/, async function(res) {
-        let explain = res.match[1].toUpperCase().trim();
-        let result = await googleSpreadsheetHandler(explain);
-        res.send(result);
-    });
+module.exports = function (robot) {
+  robot.respond(/explain (.*)/, async function (res) {
+    let explain = res.match[1].toUpperCase().trim();
+    let result = await googleSpreadsheetHandler(explain);
+    res.send(result);
+  });
 
-    robot.router.post("/hubot/explain", async function(req, res) {
-        if (MATTERMOST_TOKEN_CMD_ACRONYM != req.body.token) {
-            res.sendStatus(401);
-            return res.end("");
-        }
+  robot.router.post("/hubot/explain", async function (req, res) {
+    if (MATTERMOST_TOKEN_CMD_ACRONYM != req.body.token) {
+      res.sendStatus(401);
+      return res.end("");
+    }
 
-        let result = `Format: \`/explain <concept>\` eg. \`/explain MAAS\`. Add your own [here](https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID})`;
-        if (req.body.text) {
-            if (req.body.text.trim() != 'help') {
-                robot.logger.info(': ' + req.body.text.toUpperCase().trim());
-                result = await googleSpreadsheetHandler(req.body.text.toUpperCase().trim());
-            }
-        }
+    let result = `Format: \`/explain <concept>\` eg. \`/explain MAAS\`. Add your own [here](https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID})`;
+    if (req.body.text) {
+      if (req.body.text.trim() != "help") {
+        robot.logger.info(": " + req.body.text.toUpperCase().trim());
+        result = await googleSpreadsheetHandler(
+          req.body.text.toUpperCase().trim()
+        );
+      }
+    }
 
-        res.setHeader('content-type', 'application/json');
-        res.send(JSON.stringify({"response_type": "ephemeral", "text": result}));
-        return res.end("");
-    });
+    res.setHeader("content-type", "application/json");
+    res.send(JSON.stringify({ response_type: "ephemeral", text: result }));
+    return res.end("");
+  });
 };
