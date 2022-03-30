@@ -8,7 +8,7 @@
 //   set HUBOT_SPREADSHEET_ID in environment
 //   set HUBOT_SPREADSHEET_CLIENT_EMAIL in environment
 //   set HUBOT_SPREADSHEET_PRIVATE_KEY in environment
-//   set MATTERMOST_TOKEN_CMD_ACRONYM in environment
+//   set MATTERMOST_TOKEN_CMD_EXPLAIN in environment
 //
 // Commands:
 //   hubot explain <product|concept>: explains the concepts and provides reading resources
@@ -63,9 +63,9 @@ if (HTTPS_PROXY) {
   doc.axios.defaults.httpsAgent = new HttpsProxyAgent(HTTPS_PROXY);
 }
 
-var MATTERMOST_TOKEN_CMD_ACRONYM = process.env.MATTERMOST_TOKEN_CMD_ACRONYM;
-if (!MATTERMOST_TOKEN_CMD_ACRONYM) {
-  console.log("Missing MATTERMOST_TOKEN_CMD_ACRONYM in environment");
+var MATTERMOST_TOKEN_CMD_EXPLAIN = process.env.MATTERMOST_TOKEN_CMD_EXPLAIN;
+if (!MATTERMOST_TOKEN_CMD_EXPLAIN) {
+  console.log("Missing MATTERMOST_TOKEN_CMD_EXPLAIN in environment");
 }
 
 async function googleSpreadsheetHandler(explain) {
