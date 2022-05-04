@@ -31,24 +31,24 @@
 // Authors:
 //   tbille, amylily1011
 
-var SPREADSHEET_ID = process.env.HUBOT_SPREADSHEET_ID;
+const SPREADSHEET_ID = process.env.HUBOT_SPREADSHEET_ID;
 if (!SPREADSHEET_ID) {
   console.log("Missing HUBOT_SPREADSHEET_ID in environment");
 }
 
-var CLIENT_EMAIL = process.env.HUBOT_SPREADSHEET_CLIENT_EMAIL;
+const CLIENT_EMAIL = process.env.HUBOT_SPREADSHEET_CLIENT_EMAIL;
 if (!CLIENT_EMAIL) {
   console.log("Missing HUBOT_SPREADSHEET_CLIENT_EMAIL in environment");
 }
 
-var PRIVATE_KEY = process.env.HUBOT_SPREADSHEET_PRIVATE_KEY;
+const PRIVATE_KEY = process.env.HUBOT_SPREADSHEET_PRIVATE_KEY;
 if (!PRIVATE_KEY) {
   console.log("Missing HUBOT_SPREADSHEET_PRIVATE_KEY in environment");
 } else {
   PRIVATE_KEY = PRIVATE_KEY.replace(/\\n/g, "\n");
 }
 
-var CREDS = {
+const CREDS = {
   client_email: CLIENT_EMAIL,
   private_key: PRIVATE_KEY,
 };
@@ -56,20 +56,19 @@ var CREDS = {
 const { GoogleSpreadsheet } = require("google-spreadsheet");
 const doc = new GoogleSpreadsheet(SPREADSHEET_ID);
 
-var HTTPS_PROXY = process.env.HTTPS_PROXY;
+const HTTPS_PROXY = process.env.HTTPS_PROXY;
 if (HTTPS_PROXY) {
   doc.axios.defaults.proxy = false;
   const HttpsProxyAgent = require("https-proxy-agent");
   doc.axios.defaults.httpsAgent = new HttpsProxyAgent(HTTPS_PROXY);
 }
 
-var MATTERMOST_TOKEN_CMD_EXPLAIN = process.env.MATTERMOST_TOKEN_CMD_EXPLAIN;
+const MATTERMOST_TOKEN_CMD_EXPLAIN = process.env.MATTERMOST_TOKEN_CMD_EXPLAIN;
 if (!MATTERMOST_TOKEN_CMD_EXPLAIN) {
   console.log("Missing MATTERMOST_TOKEN_CMD_EXPLAIN in environment");
 }
 
 async function googleSpreadsheetHandler(explain) {
-  var explain;
   await doc.useServiceAccountAuth(CREDS);
   await doc.loadInfo();
   const sheet = doc.sheetsByTitle["Explain"];
@@ -78,28 +77,28 @@ async function googleSpreadsheetHandler(explain) {
   if (explain == "WHY") {
     //If the input text is WHY
     //get 'why' rows from sheet['Why']
-    var why_rows = await sheet_why.getRows();
-    var why_rows_length = why_rows.length;
-    var random_node = parseInt(
+    const why_rows = await sheet_why.getRows();
+    const why_rows_length = why_rows.length;
+    const random_node = parseInt(
       Math.floor(Math.random() * (why_rows_length + 1))
     );
 
     //find the random element in why_row
-    var why_text = why_rows.find((a) => a.rowIndex == random_node);
-    var display_text = why_text.why;
+    const why_text = why_rows.find((a) => a.rowIndex == random_node);
+    const display_text = why_text.why;
     return display_text;
   } else {
-    var rows = await sheet.getRows();
-    var responses = rows.filter(
+    const rows = await sheet.getRows();
+    const responses = rows.filter(
       (a) => a.Explain && a.Explain.toUpperCase().trim() === explain
     );
-    var text = "";
+    const text = "";
     responses.forEach(function (response) {
-      var link = response.Link ? response.Link : "";
-      var definition = response.Definition ? response.Definition : "";
-      var MM_Channel = response.Contact ? response.Contact : "";
-      var PM = response.PM ? response.PM : "";
-      var team = response.Team ? response.Team : "";
+      const link = response.Link ? response.Link : "";
+      const definition = response.Definition ? response.Definition : "";
+      const MM_Channel = response.Contact ? response.Contact : "";
+      const PM = response.PM ? response.PM : "";
+      const team = response.Team ? response.Team : "";
       text = `\n| ${response.Explain} | ${definition} |\n| PM | ${PM} |\n| Team | ${team} |\n| Contact channel | ${MM_Channel} |\n| Read more | ${link} |`;
     });
 
@@ -118,7 +117,7 @@ module.exports = function (robot) {
   });
 
   robot.router.post("/hubot/explain", async function (req, res) {
-    if (MATTERMOST_TOKEN_CMD_ACRONYM != req.body.token) {
+    if (MATTERMOST_TOKEN_CMD_EXPLAIN != req.body.token) {
       res.sendStatus(401);
       return res.end("");
     }

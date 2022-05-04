@@ -73,3 +73,7 @@ env:
     secretKeyRef:
       key: grafana-password
       name: irc-secrets
+  - name: MATTERMOST_TOKEN_CMD_EXPLAIN
+    secretKeyRef:
+      key: hubot-mattermost-token-cmd-explain
+      name: irc-secrets
