@@ -41,7 +41,7 @@ if (!CLIENT_EMAIL) {
   console.log("Missing HUBOT_SPREADSHEET_CLIENT_EMAIL in environment");
 }
 
-const PRIVATE_KEY = process.env.HUBOT_SPREADSHEET_PRIVATE_KEY;
+let PRIVATE_KEY = process.env.HUBOT_SPREADSHEET_PRIVATE_KEY;
 if (!PRIVATE_KEY) {
   console.log("Missing HUBOT_SPREADSHEET_PRIVATE_KEY in environment");
 } else {
