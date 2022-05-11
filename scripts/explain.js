@@ -92,7 +92,7 @@ async function googleSpreadsheetHandler(explain) {
     const responses = rows.filter(
       (a) => a.Explain && a.Explain.toUpperCase().trim() === explain
     );
-    const text = "";
+    let text = "";
     responses.forEach(function (response) {
       const link = response.Link ? response.Link : "";
       const definition = response.Definition ? response.Definition : "";
@@ -111,13 +111,12 @@ async function googleSpreadsheetHandler(explain) {
 
 module.exports = function (robot) {
   robot.respond(/explain (.*)/, async function (res) {
-    let explain = res.match[1].toUpperCase().trim();
-    let result = await googleSpreadsheetHandler(explain);
+    const explain = res.match[1].toUpperCase().trim();
+    const result = await googleSpreadsheetHandler(explain);
     res.send(result);
   });
 
   robot.router.post("/hubot/explain", async function (req, res) {
-    console.log("debug /explain:", req.body.token);
     if (MATTERMOST_TOKEN_CMD_EXPLAIN != req.body.token) {
       res.sendStatus(401);
       return res.end("");
