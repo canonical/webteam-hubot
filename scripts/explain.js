@@ -117,6 +117,7 @@ module.exports = function (robot) {
   });
 
   robot.router.post("/hubot/explain", async function (req, res) {
+    console.log("debug /explain:", req.body.token);
     if (MATTERMOST_TOKEN_CMD_EXPLAIN != req.body.token) {
       res.sendStatus(401);
       return res.end("");
