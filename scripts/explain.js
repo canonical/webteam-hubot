@@ -99,7 +99,13 @@ async function googleSpreadsheetHandler(explain) {
       const MM_Channel = response.Contact ? response.Contact : "";
       const PM = response.PM ? response.PM : "";
       const team = response.Team ? response.Team : "";
-      text = `\n| ${response.Explain} | ${definition} |\n| PM | ${PM} |\n| Team | ${team} |\n| Contact channel | ${MM_Channel} |\n| Read more | ${link} |`;
+      text = `| | |
+|--|--|
+| ${response.Explain} | ${definition} |
+| PM | ${PM} |
+| Team | ${team} |
+| Contact channel | ${MM_Channel} |
+| Read more | ${link} |`;
     });
 
     if (text) {
