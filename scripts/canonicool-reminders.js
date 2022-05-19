@@ -28,8 +28,8 @@ const options = {
 };
 
 const mattermostBaseURL = `https://chat.canonical.com/api/v4`;
-// const channelID = "wp8nqedft78s8c5f3chfgsfi8e"; // canonicool
-const channelID = "dewj9q7uk3d8pymujaez9ksyny"; // tester
+const channelID = "wp8nqedft78s8c5f3chfgsfi8e"; // canonicool
+// const channelID = "dewj9q7uk3d8pymujaez9ksyny"; // tester
 // const channelID = "qxfj3ebmntf6urwz888p5frhwa"; // sukha
 
 const deploymentID =
