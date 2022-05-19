@@ -28,8 +28,9 @@ const options = {
 };
 
 const mattermostBaseURL = `https://chat.canonical.com/api/v4`;
-const channelID = "wp8nqedft78s8c5f3chfgsfi8e";
-// const channelID = "qxfj3ebmntf6urwz888p5frhwa";
+// const channelID = "wp8nqedft78s8c5f3chfgsfi8e"; // canonicool
+const channelID = "dewj9q7uk3d8pymujaez9ksyny"; // tester
+// const channelID = "qxfj3ebmntf6urwz888p5frhwa"; // sukha
 
 const deploymentID =
   "AKfycbwszM7zt5YoweTwRvXgh-VLKe0L49-1jIE30lkZXAZs85yMAm4Puzt32-zNZkSCT2wKdg";
@@ -46,8 +47,8 @@ module.exports = async function (robot) {
       List of commands:
       \`canonicool alert\` - ping presenters
       \`canonicool rotate\` - rotate presenters
-      \'canonicool remind\' - remind presenters that have not confirmed yet
-      \'canonicool replace\' - ping replacement presenter 
+      \`canonicool remind\` - remind presenters that have not confirmed yet
+      \`canonicool replace\` - ping replacement presenter 
     `)
   })
 
@@ -62,11 +63,7 @@ module.exports = async function (robot) {
       React with :x: if you can't make it, or :white_check_mark: if you can!`,
     });
 
-    const postRes = await axios.post(
-      `${mattermostBaseURL}/posts`,
-      postData,
-      options
-    );
+    const postRes = await axios.post(`${mattermostBaseURL}/posts`, postData, options);
     const postID = postRes.data.id;
     const userID = postRes.data.user_id;
 
