@@ -28,7 +28,7 @@ const options = {
 };
 
 const mattermostBaseURL = `https://chat.canonical.com/api/v4`;
-const channelID = "dewj9q7uk3d8pymujaez9ksyny";
+const channelID = "wp8nqedft78s8c5f3chfgsfi8e";
 // const channelID = "qxfj3ebmntf6urwz888p5frhwa";
 
 const deploymentID =
