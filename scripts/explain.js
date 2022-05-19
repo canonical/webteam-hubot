@@ -94,11 +94,11 @@ async function googleSpreadsheetHandler(explain) {
     );
     let text = "";
     responses.forEach(function (response) {
-      const link = response.Link ? response.Link : "";
+      const link = (response.Link && response.Link !== "N/A") ? response.Link : "";
       const definition = response.Definition ? response.Definition.replace(/[\r\n]/gm, ' ') : "";
-      const MM_Channel = response.Contact ? response.Contact : "";
-      const PM = response.PM ? response.PM : "";
-      const team = response.Team ? response.Team : "";
+      const MM_Channel = (response.Contact && response.Contact !== "N/A" ) ? response.Contact : "";
+      const PM = (response.PM && response.PM !== "N/A") ? response.PM : "";
+      const team = (response.Team && response.Team !== "N/A") ? response.Team : "";
       text += `| ${response.Explain} | ${definition} |`
       PM && (text += `\n | PM | ${PM} |`)
       team && (text += `\n | Team | ${team} |`)
