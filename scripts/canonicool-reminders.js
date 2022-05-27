@@ -18,11 +18,22 @@
 //   bethcollins92 ClementChaumel albertkol mrgnr mtruj013
 
 const axios = require("axios");
+const HttpsProxyAgent = require('https-proxy-agent');
+
 const MATTERMOST_ACCESS_TOKEN = process.env.MATTERMOST_ACCESS_TOKEN;
+
+const HTTPS_PROXY = process.env.HTTPS_PROXY;
+if (HTTPS_PROXY) {
+  axios.defaults.proxy = false;
+  const HttpsProxyAgent = require("https-proxy-agent");
+  axios.defaults.httpsAgent = new HttpsProxyAgent(HTTPS_PROXY);
+}
+
 const options = {
   followRedirects: true,
   contentType: "application/json",
   headers: {
+    "User-Agent": "axios 0.21.1",
     Authorization: "Bearer " + MATTERMOST_ACCESS_TOKEN,
   },
 };
@@ -78,7 +89,7 @@ module.exports = async function (robot) {
     });
   });
 
-  robot.respond(/canonicool rotate pw:iamcanonic00l/, async function(res) {
+  robot.respond(/canonicool rotate/, async function(res) {
     await axios.post(rotateURL, null, options);
 
     res.send("Rotation complete!")
