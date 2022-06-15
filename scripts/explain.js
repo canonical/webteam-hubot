@@ -92,7 +92,7 @@ async function googleSpreadsheetHandler(explain) {
     const responses = rows.filter(
       (a) => a.Explain && a.Explain.toUpperCase().trim() === explain
     );
-    let text = "";
+    let text = "| | |\n|--|--|\n";
     responses.forEach(function (response) {
       const link = (response.Link && response.Link !== "N/A") ? response.Link : "";
       const definition = response.Definition ? response.Definition.replace(/[\r\n]/gm, ' ') : "";
