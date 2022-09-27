@@ -35,15 +35,47 @@ async function requestPullRequests(authors) {
         authors_query = authors_query.concat(" author:" + author);
     });
 
-    var query =  `
-      {
-        search(query: "org:canonical-web-and-design is:pr is:open archived:false ${authors_query}", type: ISSUE) {
-          issueCount
+    var prsCount = 0;
+    var next;
+    while(true) {
+        if (next) {
+            var idNext = `, after: "${next}"`
+        } else {
+            var idNext = ""
         }
-      }`;
+        var query =  `
+            query MyQuery {
+                organization(login: "canonical") {
+                    team(slug: "web-and-design") {
+                        repositories(last: 100${idNext}) {
+                            nodes {
+                                pullRequests(first: 100, states: OPEN) {
+                                totalCount
+                                }
+                            }
+                            pageInfo {
+                                hasNextPage
+                                endCursor
+                            }
+                        }
+                    }
+                }
+            }`;
 
-    const data = await graphQuery(query);
-    return data["search"]["issueCount"];
+        var data = await graphQuery(query);
+
+        data["organization"]["team"]["repositories"]["nodes"].forEach(function(repository) {
+            prsCount = prsCount + repository["pullRequests"]["totalCount"]
+        });
+
+        if(data["organization"]["team"]["repositories"]["pageInfo"]["hasNextPage"]) {
+            next = data["organization"]["team"]["repositories"]["pageInfo"]["endCursor"];
+        } else {
+            break;
+        }
+    }
+
+    return prsCount;
 }
 
 async function sendNumberOpenedPullRequests(res, robot, rooms, authors) {
@@ -54,7 +86,7 @@ async function sendNumberOpenedPullRequests(res, robot, rooms, authors) {
         authors_query = authors_query.concat("+author%3A" + author);
     });
 
-    var message = "[webteam-pr] 📋 There are " + issueCount + " pull-requests open. You can find the list [here](https://github.com/search?q=org%3Acanonical-web-and-design+is%3Apr+is%3Aopen+archived%3Afalse" + authors_query + ") or on [this dashboard](https://datastudio.google.com/reporting/4599ef41-f50d-4ace-b269-e6225a9b30e0). Of course don't forget to look at the [Renovate/dependabot leaderboard](https://datastudio.google.com/reporting/4a7e2af0-dbd6-4063-91d0-f0b3b7849ab7).";
+    var message = "[webteam-pr] 📋 There are " + issueCount + " pull-requests open. You can find the list on [this dashboard](https://datastudio.google.com/reporting/4599ef41-f50d-4ace-b269-e6225a9b30e0/page/eTcwB)";
 
     if (rooms) {
         rooms.forEach(function (room) {
@@ -71,7 +103,7 @@ module.exports = async function(robot) {
     });
 
     robot.respond(/gh$/, function(res) {
-        sendNumberOpenedPullRequests(res, robot);
+        sendNumberOpenedPullRequests(res, robot, "", []);
     });
 
     robot.router.post("/hubot/gh-pull-request-notification", async function(req, res) {
