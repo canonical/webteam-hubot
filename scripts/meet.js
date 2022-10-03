@@ -49,16 +49,23 @@ module.exports = function(robot) {
         }
 
         let result = `Create a new Meet and post the link to the current channel, format: \`/meet @{username} [@{username} ...]\``;
+        let fallbackText = result;
 
         if (req.body.text) {
             if (req.body.text.trim() != 'help') {
                 robot.logger.info('Meet participants: ' + req.body.text);
                 result = await cmdOutput(req.body.user_name, req.body.text);
+                fallbackText = `${req.body.user_name} created a new Meet with ${req.body.text}`;
             }
         }
 
         res.setHeader('content-type', 'application/json');
-        res.send(JSON.stringify({"response_type": "in_channel", "icon_url": "https://assets.ubuntu.com/v1/fa583301-meet-bot-logo.png", "text": result}));
+        res.send(JSON.stringify({
+            "response_type": "in_channel",
+            "icon_url": "https://assets.ubuntu.com/v1/fa583301-meet-bot-logo.png",
+            "text": result,
+            "fallback": fallbackText
+        }));
         return res.end("");
     });
 };
