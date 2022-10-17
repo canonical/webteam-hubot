@@ -1,6 +1,6 @@
 // Description:
-//   A place to get initial explanation of products or concepts at Canonical that reads from a Google spreadsheet.
-//
+//    A place to get initial explanation of products or concepts
+//    at Canonical based on a Google spreadsheet.
 // Dependencies:
 //   google-spreadsheet: ""
 //
@@ -25,119 +25,113 @@
 // Note:
 //   The format of the spreadsheet should be:
 //
-//   | Explain | Definition                            | PM          | Contact | Link                                                                                              |
-//   | MAAS    | MAAS is a fast provisioning tool..... | Anton Smith | ~MAAS   | https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests |
+// | Explain | Definition                        | PM          | Contact | Link            |
+// | ------- | --------------------------------- | ----------- | ------- | --------------- |
+// | MAAS    | MAAS is a fast provisioning tool. | Anton Smith | ~MAAS   | https://maas.io |
 //
 // Authors:
-//   tbille, amylily1011
-
-const SPREADSHEET_ID = process.env.HUBOT_SPREADSHEET_ID;
-if (!SPREADSHEET_ID) {
-  console.log("Missing HUBOT_SPREADSHEET_ID in environment");
-}
-
-const CLIENT_EMAIL = process.env.HUBOT_SPREADSHEET_CLIENT_EMAIL;
-if (!CLIENT_EMAIL) {
-  console.log("Missing HUBOT_SPREADSHEET_CLIENT_EMAIL in environment");
-}
-
-let PRIVATE_KEY = process.env.HUBOT_SPREADSHEET_PRIVATE_KEY;
-if (!PRIVATE_KEY) {
-  console.log("Missing HUBOT_SPREADSHEET_PRIVATE_KEY in environment");
-} else {
-  PRIVATE_KEY = PRIVATE_KEY.replace(/\\n/g, "\n");
-}
-
-const CREDS = {
-  client_email: CLIENT_EMAIL,
-  private_key: PRIVATE_KEY,
-};
+//   amylily1011, goulinkh, toto
 
 const { GoogleSpreadsheet } = require("google-spreadsheet");
-const doc = new GoogleSpreadsheet(SPREADSHEET_ID);
+const { requiredEnvs } = require("./utils");
 
+const {
+  HUBOT_SPREADSHEET_ID,
+  HUBOT_SPREADSHEET_CLIENT_EMAIL,
+  HUBOT_SPREADSHEET_PRIVATE_KEY,
+  MATTERMOST_TOKEN_CMD_EXPLAIN,
+} = process.env;
 const HTTPS_PROXY = process.env.HTTPS_PROXY;
+
+requiredEnvs({
+  HUBOT_SPREADSHEET_ID,
+  HUBOT_SPREADSHEET_CLIENT_EMAIL,
+  HUBOT_SPREADSHEET_PRIVATE_KEY,
+  MATTERMOST_TOKEN_CMD_EXPLAIN,
+});
+
+const usage = `Format: \`/explain <concept>\` eg. \`/explain MAAS\`. Add your own [here](https://docs.google.com/spreadsheets/d/${HUBOT_SPREADSHEET_ID})`;
+
+const googleServiceCreds = {
+  client_email: HUBOT_SPREADSHEET_CLIENT_EMAIL,
+  private_key: HUBOT_SPREADSHEET_PRIVATE_KEY,
+};
+const doc = new GoogleSpreadsheet(HUBOT_SPREADSHEET_ID);
+
 if (HTTPS_PROXY) {
   doc.axios.defaults.proxy = false;
   const HttpsProxyAgent = require("https-proxy-agent");
   doc.axios.defaults.httpsAgent = new HttpsProxyAgent(HTTPS_PROXY);
 }
 
-const MATTERMOST_TOKEN_CMD_EXPLAIN = process.env.MATTERMOST_TOKEN_CMD_EXPLAIN;
-if (!MATTERMOST_TOKEN_CMD_EXPLAIN) {
-  console.log("Missing MATTERMOST_TOKEN_CMD_EXPLAIN in environment");
-}
+const sanitizeValue = (value) => value.replace(/[\r\n]/, "").trim();
+const valueIsEmpty = (value) =>
+  !value || value.toLocaleLowerCase().trim() === "n/a";
+const formatRowToMDTable = (row) => {
+  let mdTable = `| | |\n|--|--|\n`;
+  const rows = [];
+  rows.push([row.Explain, row.Definition]);
+  if (!valueIsEmpty(row.PM)) rows.push(["PM", row.PM]);
+  if (!valueIsEmpty(row.Team)) rows.push(["Team", row.Team]);
+  if (!valueIsEmpty(row.Contact)) rows.push(["Contact channel", row.Contact]);
+  if (!valueIsEmpty(row.Link)) rows.push(["Read more", row.Link]);
+  mdTable += rows
+    .map((row) => `| ${sanitizeValue(row[0])} | ${sanitizeValue(row[1])} |`)
+    .join("\n");
+  return mdTable;
+};
 
-async function googleSpreadsheetHandler(explain) {
-  await doc.useServiceAccountAuth(CREDS);
+/**
+ * A place to get initial explanation of products or concepts
+ * at Canonical based on a Google spreadsheet.
+ * @param {string} explainQuery a product or concept that needs explanation
+ * @returns string
+ */
+async function fetchExplanation(explainQuery) {
+  await doc.useServiceAccountAuth(googleServiceCreds);
   await doc.loadInfo();
   const sheet = doc.sheetsByTitle["Explain"];
-  const sheet_why = doc.sheetsByTitle["Why"];
-
-  if (explain == "WHY") {
-    //If the input text is WHY
-    //get 'why' rows from sheet['Why']
-    const why_rows = await sheet_why.getRows();
-    const why_rows_length = why_rows.length;
-    const random_node = parseInt(
-      Math.floor(Math.random() * (why_rows_length + 1))
+  if (explainQuery.toLowerCase().trim() == "why") {
+    // Get a random row from the "why" sheet
+    const why = doc.sheetsByTitle["Why"];
+    const rows = await why.getRows();
+    const randomRowIndex = parseInt(
+      Math.floor(Math.random() * (rows.length + 1))
     );
-
-    //find the random element in why_row
-    const why_text = why_rows.find((a) => a.rowIndex == random_node);
-    const display_text = why_text.why;
+    const whyRandomRow = rows.find((row) => row.rowIndex == randomRowIndex);
+    const display_text = whyRandomRow.why;
     return display_text;
   } else {
     const rows = await sheet.getRows();
-    const responses = rows.filter(
-      (a) => a.Explain && a.Explain.toUpperCase().trim() === explain
-    );
-    let text = "| | |\n|--|--|\n";
-    responses.forEach(function (response) {
-      const link = (response.Link && response.Link !== "N/A") ? response.Link : "";
-      const definition = response.Definition ? response.Definition.replace(/[\r\n]/gm, ' ') : "";
-      const MM_Channel = (response.Contact && response.Contact !== "N/A" ) ? response.Contact : "";
-      const PM = (response.PM && response.PM !== "N/A") ? response.PM : "";
-      const team = (response.Team && response.Team !== "N/A") ? response.Team : "";
-      text += `| ${response.Explain} | ${definition} |`
-      PM && (text += `\n | PM | ${PM} |`)
-      team && (text += `\n | Team | ${team} |`)
-      MM_Channel && (text += `\n | Contact channel | ${MM_Channel} |`)
-      link && (text += `\n | Read more | ${link} |`)
-    });
 
-    if (text) {
-      return text;
-    }
-    return `We cannot explain this product/concept yet. Add your explanation [here](https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID})`;
+    const row = rows.find(
+      (row) =>
+        row?.Explain.toLowerCase().trim() ===
+        explainQuery.toLocaleLowerCase().trim()
+    );
+    if (!row)
+      return `We cannot explain this product/concept yet. Add your explanation [here](https://docs.google.com/spreadsheets/d/${HUBOT_SPREADSHEET_ID})`;
+    return formatRowToMDTable(row);
   }
 }
 
 module.exports = function (robot) {
   robot.respond(/explain (.*)/, async function (res) {
-    const explain = res.match[1].toUpperCase().trim();
-    const result = await googleSpreadsheetHandler(explain);
-    res.send(result);
+    const explainQuery = res.match[1];
+    res.send(await fetchExplanation(explainQuery));
   });
 
   robot.router.post("/hubot/explain", async function (req, res) {
     if (MATTERMOST_TOKEN_CMD_EXPLAIN != req.body.token) {
-      res.sendStatus(401);
-      return res.end("");
+      return res.status(401).json({ error: "Unauthorized" });
     }
 
-    let result = `Format: \`/explain <concept>\` eg. \`/explain MAAS\`. Add your own [here](https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID})`;
-    if (req.body.text) {
-      if (req.body.text.trim() != "help") {
-        robot.logger.info(": " + req.body.text.toUpperCase().trim());
-        result = await googleSpreadsheetHandler(
-          req.body.text.toUpperCase().trim()
-        );
-      }
+    const explainQuery = req.body.text;
+    if (!explainQuery || explainQuery.trim().match(/^(-)*h(elp)?$/gi)) {
+      return res.json({ response_type: "ephemeral", text: usage });
     }
-
-    res.setHeader("content-type", "application/json");
-    res.send(JSON.stringify({ response_type: "ephemeral", text: result }));
-    return res.end("");
+    robot.logger.info(": " + explainQuery);
+    result = await fetchExplanation(explainQuery);
+    return res.json({ response_type: "ephemeral", text: result });
   });
 };
