@@ -106,7 +106,7 @@ async function fetchExplanation(explainQuery) {
 
     const row = rows.find(
       (row) =>
-        row?.Explain.toLowerCase().trim() ===
+        row.Explain.toLowerCase().trim() ===
         explainQuery.toLocaleLowerCase().trim()
     );
     if (!row)
