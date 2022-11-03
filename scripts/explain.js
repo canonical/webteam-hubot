@@ -104,11 +104,21 @@ async function fetchExplanation(explainQuery) {
   } else {
     const rows = await sheet.getRows();
 
-    const row = rows.find(
-      (row) =>
-        row.Explain.toLowerCase().trim() ===
-        explainQuery.toLocaleLowerCase().trim()
-    );
+    const row = rows.find((row) => {
+      row = row || {};
+      const searchQuery = explainQuery.toLocaleLowerCase().trim();
+      const explain = row.Explain || "";
+      const alias = row.Alias || "";
+      return (
+        explain.toLowerCase().trim() === searchQuery ||
+        alias
+          .toLowerCase()
+          .trim()
+          .split(",")
+          .map((e) => e.trim().toLocaleLowerCase())
+          .find((keyword) => keyword == searchQuery)
+      );
+    });
     if (!row)
       return `We cannot explain this product/concept yet. Add your explanation [here](https://docs.google.com/spreadsheets/d/${HUBOT_SPREADSHEET_ID})`;
     return formatRowToMDTable(row);
