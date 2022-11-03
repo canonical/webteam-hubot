@@ -68,7 +68,7 @@ const sanitizeValue = (value) => value.replace(/[\r\n]/, "").trim();
 const valueIsEmpty = (value) =>
   !value || value.toLocaleLowerCase().trim() === "n/a";
 const formatRowToMDTable = (row) => {
-  let mdTable = `| | |\n|--|--|\n`;
+  let mdTable = `| Title | Description |\n|--|--|\n`;
   const rows = [];
   rows.push([row.Explain, row.Definition]);
   if (!valueIsEmpty(row.PM)) rows.push(["PM", row.PM]);
