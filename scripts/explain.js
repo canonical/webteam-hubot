@@ -50,7 +50,7 @@ requiredEnvs({
   MATTERMOST_TOKEN_CMD_EXPLAIN,
 });
 
-const usage = `Format: \`/explain <concept>\` eg. \`/explain MAAS\`. Add your own [here](https://docs.google.com/spreadsheets/d/${HUBOT_SPREADSHEET_ID})`;
+const usage = `Format: \`/explain <concept>\` eg. \`/explain MAAS\`. Add your own [here](https://docs.google.com/spreadsheets/d/1nNk4typDnOfDEYRzlEjtd58zk-aOd3_NNp6eufthZHM/edit#gid=2064544629)`;
 
 const googleServiceCreds = {
   client_email: HUBOT_SPREADSHEET_CLIENT_EMAIL,
@@ -119,8 +119,7 @@ async function fetchExplanation(explainQuery) {
           .find((keyword) => keyword == searchQuery)
       );
     });
-    if (!row)
-      return `We cannot explain this product/concept yet. Add your explanation [here](https://docs.google.com/spreadsheets/d/${HUBOT_SPREADSHEET_ID})`;
+    if (!row) return usage;
     return formatRowToMDTable(row);
   }
 }
