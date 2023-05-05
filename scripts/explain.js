@@ -142,6 +142,13 @@ async function fetchExplanation(explainQuery) {
       return usage;
     }
 
+    if (row.Count) {
+      row.Count = parseInt(row.Count) + 1;
+    } else {
+      row.Count = "1";
+    }
+    row.save();
+
     return formatRowToMDTable(row);
   }
 }
