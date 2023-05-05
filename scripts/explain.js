@@ -163,9 +163,14 @@ async function unexplainedTop(doc) {
 
   sorted = rows.sort(compare);
 
-  return rows.slice(0, 6);
+  return rows.slice(0, 5);
 }
 
+/**
+ * For unexplained queries; either increments the search count or adds it as a new row
+ * @param doc  google doc
+ * @param unExplainedQuery the query that is unexpained
+ */
 async function unexplained(doc, unExplainedQuery) {
   const sheet = doc.sheetsByTitle["Unexplained"];
 
