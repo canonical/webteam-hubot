@@ -16,7 +16,7 @@ env:
   - name: MATTERMOST_GROUP
     value: "canonical"
   - name: HUBOT_RELEASE_NOTIFICATION_ROOMS
-    value: "web--design,is-outage"
+    value: "is-outage"
   - name: HUBOT_IRC_DEBUG
     value: "true"
   - name: HUBOT_SPREADSHEET_CLIENT_EMAIL
