@@ -10,9 +10,7 @@
 // Authors:
 //   dgtlntv
 
-var url;
-
-url = require("url");
+var url = require("url");
 
 module.exports = function (robot) {
   return robot.router.post("/hubot/figma-library-alert", function (req, res) {
