@@ -32,7 +32,10 @@
 // Authors:
 //   amylily1011, goulinkh, toto
 
-const { GoogleSpreadsheet } = require("google-spreadsheet");
+const {
+  GoogleSpreadsheet,
+  GoogleSpreadsheetRow,
+} = require("google-spreadsheet");
 const { requiredEnvs } = require("./utils");
 
 const {
@@ -50,7 +53,7 @@ requiredEnvs({
   MATTERMOST_TOKEN_CMD_EXPLAIN,
 });
 
-const usage = `Format: \`/explain <concept>\` eg. \`/explain MAAS\`. Add your own [here](https://docs.google.com/spreadsheets/d/1nNk4typDnOfDEYRzlEjtd58zk-aOd3_NNp6eufthZHM/edit#gid=2064544629)`;
+const usage = `Format: \`/explain <concept>\` eg. \`/explain MAAS\`. If you want to see the top 5 unexplained terms try '\/explain top-5\' . Add your own [here](https://docs.google.com/spreadsheets/d/1nNk4typDnOfDEYRzlEjtd58zk-aOd3_NNp6eufthZHM/edit#gid=2064544629)`;
 
 const googleServiceCreds = {
   client_email: HUBOT_SPREADSHEET_CLIENT_EMAIL,
@@ -101,6 +104,19 @@ async function fetchExplanation(explainQuery) {
     const whyRandomRow = rows.find((row) => row.rowIndex == randomRowIndex);
     const display_text = whyRandomRow.why;
     return display_text;
+  } else if (explainQuery.toLowerCase().trim() == "top-5") {
+    const unexplained_top = await unexplainedTop(doc);
+
+    let unexplained_str = "Top 5 unexplained terms. Format: '<term>(count)' ";
+    unexplained_top.forEach((u) => {
+      unexplained_str = unexplained_str + ` - \'${u.Explain}(${u.Count})\'`;
+    });
+
+    unexplained_str =
+      unexplained_str +
+      `. If you can explain any of these terms or want to add your own [here](https://docs.google.com/spreadsheets/d/1nNk4typDnOfDEYRzlEjtd58zk-aOd3_NNp6eufthZHM/edit#gid=2064544629)`;
+
+    return unexplained_str;
   } else {
     const rows = await sheet.getRows();
 
@@ -119,8 +135,67 @@ async function fetchExplanation(explainQuery) {
           .find((keyword) => keyword == searchQuery)
       );
     });
-    if (!row) return usage;
+
+    if (!row) {
+      // add to the unexplained sheet
+      unexplained(doc, explainQuery);
+      return usage;
+    }
+
+    if (row.Count) {
+      row.Count = parseInt(row.Count) + 1;
+    } else {
+      row.Count = "1";
+    }
+    row.save();
+
     return formatRowToMDTable(row);
+  }
+}
+
+// compare 2 terms to get the one with the higher count - used for sorting
+function compare(a, b) {
+  if (parseInt(a.Count) >= parseInt(b.Count)) return -1;
+  return 1;
+}
+
+/**
+ *
+ * @param doc
+ * @returns top 5 unexplained terms
+ */
+async function unexplainedTop(doc) {
+  const sheet = doc.sheetsByTitle["Unexplained"];
+  const rows = await sheet.getRows();
+
+  sorted = rows.sort(compare);
+
+  return rows.slice(0, 5);
+}
+
+/**
+ * For unexplained queries; either increments the search count or adds it as a new row
+ * @param doc  google doc
+ * @param unExplainedQuery the query that is unexpained
+ */
+async function unexplained(doc, unExplainedQuery) {
+  const sheet = doc.sheetsByTitle["Unexplained"];
+
+  const rows = await sheet.getRows();
+  const searchQuery = unExplainedQuery.toLocaleLowerCase().trim();
+
+  const row = rows.find((row) => {
+    row = row || {};
+    const explain = row.Explain || "";
+    return explain.toLowerCase().trim() === searchQuery;
+  });
+
+  if (row) {
+    row.Count = parseInt(row.Count) + 1;
+    row.save();
+  } else {
+    // add new row
+    await sheet.addRow({ Explain: searchQuery, Count: "1" });
   }
 }
 
