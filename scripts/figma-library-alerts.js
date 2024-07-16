@@ -20,7 +20,7 @@ module.exports = function (robot) {
     if (req.headers["x-goog-channel-id"]) {
       let token = req.headers["x-goog-channel-token"];
       let resourceState = req.headers["x-goog-resource-state"];
-      let changed = reg.headers["x-goog-changed"];
+      let changed = req.headers["x-goog-changed"];
       let message = `On Google Drive ${token} changed. Action type: ${resourceState} ${
         changed ? `Change type: ${changed}` : ""
       }`;
