@@ -46,18 +46,20 @@ module.exports = function (robot) {
     } else {
       // X-Goog- header not present, use default message which will be used in Github Actions
       let data = req.body;
-      let message = `${data["source"]} has changed. Changes: ${data["change-summary"]}.`;
+      if (data) {
+        let message = `${data["source"]} has changed. Changes: ${data["change-summary"]}.`;
 
-      try {
-        robot.messageRoom(room, message);
-      } catch (_error) {
-        robot.messageRoom(room, "Whoa, I got an error: " + _error);
-        console.log(
-          "figma library alert error: " +
-            _error +
-            ". " +
-            ("Request: " + req.body)
-        );
+        try {
+          robot.messageRoom(room, message);
+        } catch (_error) {
+          robot.messageRoom(room, "Whoa, I got an error: " + _error);
+          console.log(
+            "figma library alert error: " +
+              _error +
+              ". " +
+              ("Request: " + req.body)
+          );
+        }
       }
     }
 
