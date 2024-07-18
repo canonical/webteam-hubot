@@ -15,7 +15,6 @@ var url = require("url");
 module.exports = function (robot) {
   return robot.router.post("/hubot/figma-library-alert", function (req, res) {
     let room = "figma-library-maintainers";
-
     // Check if X-Goog- header is present, so the callback came from the Google Drive Webhook
     if (req.headers["x-goog-channel-id"]) {
       let token = req.headers["x-goog-channel-token"];
@@ -26,11 +25,28 @@ module.exports = function (robot) {
       }`;
 
       try {
-        if (resourceState !== "sync") {
-          if (
-            !changed ||
-            (changed !== "parents" && changed !== "permissions")
-          ) {
+        if (resourceState !== "sync" && resourceState !== "add") {
+          if (changed) {
+            // Split the changed string into an array
+            let changedArray = changed.split(",").map((item) => item.trim());
+
+            // Define the changes we're not interested in
+            const uninterestingChanges = [
+              "parents",
+              "permissions",
+              "properties",
+            ];
+
+            // Check if the array includes any changes we're interested in
+            const hasInterestingChange = changedArray.some(
+              (change) => !uninterestingChanges.includes(change)
+            );
+
+            if (hasInterestingChange) {
+              robot.messageRoom(room, message);
+            }
+          } else {
+            // If changed is not present, we still want to send the message
             robot.messageRoom(room, message);
           }
         }
@@ -48,7 +64,6 @@ module.exports = function (robot) {
       let data = req.body;
       if (data) {
         let message = `${data["source"]} has changed. Changes: ${data["change-summary"]}.`;
-
         try {
           robot.messageRoom(room, message);
         } catch (_error) {
@@ -62,7 +77,6 @@ module.exports = function (robot) {
         }
       }
     }
-
     return res.end("");
   });
 };
