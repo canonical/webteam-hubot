@@ -28,7 +28,7 @@ module.exports = function (robot) {
         if (resourceState !== "sync" && resourceState !== "add") {
           if (changed) {
             // Split the changed string into an array
-            let changedArray = changed.split(",").map((item) => item.trim());
+            const changedArray = changed.split(",").map((item) => item.trim());
 
             // Define the changes we're not interested in
             const uninterestingChanges = [
