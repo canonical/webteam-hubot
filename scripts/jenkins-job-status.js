@@ -19,15 +19,15 @@
 
 const JENKINS_TOKEN = process.env.JENKINS_SECRET;
 const JENKINS_URL = process.env.JENKINS_URL;
-
-var querystring, fetch;
+const HUBOT_RELEASE_NOTIFICATION_SECRET =
+  process.env.HUBOT_RELEASE_NOTIFICATION_SECRET;
 
 fetch = require("node-fetch");
 querystring = require("querystring");
 
 module.exports = async function (robot) {
   const echoJobStatus = (room, jobName, job_id) => {
-    let job_id = job_id || "lastBuild";
+    job_id = job_id || "lastBuild";
     let job_json_url = `http://${JENKINS_URL}/job/${jobName}/${job_id}/api/json?${url_params}`;
     let url_params = `token=${JENKINS_TOKEN}`;
 
@@ -70,7 +70,7 @@ module.exports = async function (robot) {
   };
 
   const echoJobLogs = (room, jobName, job_id) => {
-    let job_id = job_id || "lastBuild";
+    job_id = job_id || "lastBuild";
     let job_json_url = `http://${JENKINS_URL}/job/${jobName}/${job_id}/consoleText?${url_params}`;
     let url_params = `token=${JENKINS_TOKEN}`;
 
@@ -129,6 +129,13 @@ module.exports = async function (robot) {
     let data = req.body;
     let jenkins_job = data.jenkins_job;
     let job_id = data.job_id;
+    let secret = data.secret;
+
+    if (secret != HUBOT_RELEASE_NOTIFICATION_SECRET) {
+      res.send("Invalid secret");
+      res.end("");
+      return;
+    }
 
     // Post the status to the webteam-job-status room
     echoJobStatus("webteam-job-status", jenkins_job, job_id);
