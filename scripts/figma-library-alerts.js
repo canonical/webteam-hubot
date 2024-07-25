@@ -77,6 +77,6 @@ module.exports = function (robot) {
         }
       }
     }
-    return res.end("");
+    return res.status(200).end("");
   });
 };
