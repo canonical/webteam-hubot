@@ -63,7 +63,7 @@ module.exports = function (robot) {
       // X-Goog- header not present, use default message which will be used in Github Actions
       let data = req.body;
       if (data) {
-        let message = `${data["source"]} has changed. Changes: ${data["change-summary"]}.`;
+        const message = `${data["source"]} has changed. Changes: ${data["change-summary"]}.`;
         try {
           robot.messageRoom(room, message);
         } catch (_error) {
