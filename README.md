@@ -13,6 +13,7 @@ Here is the list of great scripts that `webbot` provides:
 - `github-action-notifier.js`: an endpoint to notify a IRC channel that a GitHub Action as failed
 - `pull-request-notifications.coffee`: an endpoint that listens to webhooks from GitHub and publishes a message on IRC on new pull-requests
 - `release-notifications.coffee`: an endpoint to notify a given channel when a site gets released
+- `jenkins-job-status.js`: an endpoint to return the status of a job's last build on jenkins
 - `rt-portal.coffee`: rt#NUMBER to a clickable link
 - `status.coffee`: an endpoint that returns OK
 - `toto.coffee`: fun scripts

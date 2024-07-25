@@ -29,6 +29,14 @@ env:
     secretKeyRef:
       key: hubot-auth-admin
       name: irc-secrets
+  - name: JENKINS_URL
+    secretKeyRef:
+      key: jenkins-url
+      name: webteam-jenkins
+  - name: JENKINS_TOKEN
+    secretKeyRef:
+      key: jenkins-token
+      name: webteam-jenkins
   - name: MATTERMOST_ACCESS_TOKEN
     secretKeyRef:
       key: mattermost-access-token
