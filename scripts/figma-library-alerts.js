@@ -17,7 +17,7 @@ module.exports = function (robot) {
     let room = "figma-library-maintainers";
     // Check if X-Goog- header is present, so the callback came from the Google Drive Webhook
     if (req.headers["x-goog-channel-id"]) {
-      let token = req.headers["x-goog-channel-token"];
+      const token = req.headers["x-goog-channel-token"];
       let resourceState = req.headers["x-goog-resource-state"];
       let changed = req.headers["x-goog-changed"];
       let message = `On Google Drive ${token} changed. Action type: ${resourceState} ${
