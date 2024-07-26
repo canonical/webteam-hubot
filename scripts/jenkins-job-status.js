@@ -27,9 +27,9 @@ querystring = require("querystring");
 
 module.exports = async function (robot) {
   const echoJobStatus = (room, jobName, job_id) => {
+    let url_params = `token=${JENKINS_TOKEN}`;
     job_id = job_id || "lastBuild";
     let job_json_url = `http://${JENKINS_URL}/job/${jobName}/${job_id}/api/json?${url_params}`;
-    let url_params = `token=${JENKINS_TOKEN}`;
 
     // Fetch the status of the job from Jenkins
     fetch(job_json_url).then((response) => {
