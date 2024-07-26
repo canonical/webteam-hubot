@@ -29,34 +29,35 @@ module.exports = async function (robot) {
   const echoJobStatus = (room, jobName, job_id) => {
     let url_params = `token=${JENKINS_TOKEN}`;
     job_id = job_id || "lastBuild";
-    let job_json_url = `http://${JENKINS_URL}/job/${jobName}/${job_id}/api/json?${url_params}`;
+    let job_json_url = `http://${JENKINS_URL}/webteam/job/${jobName}/${job_id}/api/json?${url_params}`;
 
     // Fetch the status of the job from Jenkins
     fetch(job_json_url).then((response) => {
       if (response.ok) {
         let data = response.json();
         if (data.result === "FAILURE") {
-          robot.messageRoom(
-            room,
+          let message =
             "[webteam-jenkins] ❌ Jenkins job '" +
-              jobName +
-              "' failed." +
-              `You can check the logs at ${data.url}` +
-              "/console"
-          );
+            jobName +
+            "' failed." +
+            `You can check the logs at ${data.url}` +
+            "/console";
+          res.send(message);
+          robot.messageRoom(room, message);
         } else if (data.result === "SUCCESS") {
-          robot.messageRoom(
-            room,
-            "[webteam-jenkins] ✅ Jenkins job '" + jobName + "' succeeded."
-          );
+          let message =
+            "[webteam-jenkins] ✅ Jenkins job '" + jobName + "' succeeded.";
+          res.send(message);
+          robot.messageRoom(room, message);
         } else {
-          robot.messageRoom(
+          let message =
             "[webteam-jenkins] 🛠️ Jenkins job '" +
-              jobName +
-              "' is still building." +
-              `You can check the logs at ${data.url}` +
-              "/console"
-          );
+            jobName +
+            "' is still building." +
+            `You can check the logs at ${data.url}` +
+            "/console";
+          res.send(message);
+          robot.messageRoom(message);
         }
         return res.end("");
       } else {
